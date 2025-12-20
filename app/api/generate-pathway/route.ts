@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server"
 import Groq from "groq-sdk"
 import prisma from "@/lib/prisma"
-
-const groq = new Groq({
-    apiKey: process.env.GROQ_API_KEY,
-})
+export const dynamic = 'force-dynamic'
 
 interface PathwayResult {
     conceptOverview: string
@@ -20,6 +17,9 @@ interface PathwayResult {
 }
 
 export async function POST(request: Request) {
+    const groq = new Groq({
+        apiKey: process.env.GROQ_API_KEY,
+    })
     try {
         const { topic, guestId, fullText } = await request.json()
 
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: "Topic is required" }, { status: 400 })
         }
 
-        const pathway = await generatePathway(topic.trim(), fullText)
+        const pathway = await generatePathway(topic.trim(), groq, fullText)
 
         const savedPathway = await prisma.pathway.create({
             data: {
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
     }
 }
 
-async function generatePathway(topic: string, context?: string): Promise<PathwayResult> {
+async function generatePathway(topic: string, groq: Groq, context?: string): Promise<PathwayResult> {
     const systemPrompt = `You are a world-class curriculum designer and pedagogical expert. Your task is to map out the complete learning pathway, explain the core concept, and provide EASY learning tips for any academic topic.
     
     If context is provided (from a student's notes or textbook), use it to tailor the explanation and pathway.

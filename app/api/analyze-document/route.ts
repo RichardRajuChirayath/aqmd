@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server"
 import Groq from "groq-sdk"
-
-const groq = new Groq({
-    apiKey: process.env.GROQ_API_KEY,
-})
+export const dynamic = 'force-dynamic'
 
 const OCR_SPACE_API_KEY = "K84303568988957"
 
 export async function POST(request: Request) {
+    const groq = new Groq({
+        apiKey: process.env.GROQ_API_KEY,
+    })
     try {
         const formData = await request.formData()
         const file = formData.get("file") as File

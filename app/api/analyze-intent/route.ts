@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server"
 import Groq from "groq-sdk"
 import prisma from "@/lib/prisma"
-
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
-})
+export const dynamic = 'force-dynamic'
 
 export async function POST(request: Request) {
+  const groq = new Groq({
+    apiKey: process.env.GROQ_API_KEY,
+  })
   try {
     const { question, answer, guestId } = await request.json()
 
@@ -50,6 +50,9 @@ interface AnalysisResult {
 }
 
 async function analyzeWithGroq(question: string, answer: string, retryCount = 0): Promise<AnalysisResult> {
+  const groq = new Groq({
+    apiKey: process.env.GROQ_API_KEY,
+  })
   const systemPrompt = `You are a professional educational assessor. Your task is to analyze the semantic alignment between a teacher's question and a student's response.
   
   CRITICAL: You must return ONLY a JSON object. Do not include any preamble, markdown formatting, or postscript.
