@@ -85,6 +85,12 @@
       "namedRegex": "^/api/analyze\\-intent(?:/)?$"
     },
     {
+      "page": "/api/analyze-score",
+      "regex": "^/api/analyze\\-score(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/analyze\\-score(?:/)?$"
+    },
+    {
       "page": "/api/clear-history",
       "regex": "^/api/clear\\-history(?:/)?$",
       "routeKeys": {},

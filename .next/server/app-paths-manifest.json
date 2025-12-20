@@ -4,6 +4,7 @@
   "/api/analysis/[id]/route": "app/api/analysis/[id]/route.js",
   "/api/analyze-document/route": "app/api/analyze-document/route.js",
   "/api/analyze-intent/route": "app/api/analyze-intent/route.js",
+  "/api/analyze-score/route": "app/api/analyze-score/route.js",
   "/api/clear-history/route": "app/api/clear-history/route.js",
   "/api/generate-pathway/route": "app/api/generate-pathway/route.js",
   "/api/history/route": "app/api/history/route.js",

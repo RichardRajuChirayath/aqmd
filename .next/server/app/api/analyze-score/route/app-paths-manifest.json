@@ -1,0 +1,3 @@
+{
+  "/api/analyze-score/route": "app/api/analyze-score/route.js"
+}

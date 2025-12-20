@@ -1,13 +1,12 @@
 "use client"
 
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import { useRouter, useParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Download, Share2, ArrowLeft, Loader2, Target, CheckCircle2, AlertCircle, Lightbulb, FileText, Sparkles } from "lucide-react"
+import { Share2, ArrowLeft, Loader2, Target, CheckCircle2, AlertCircle, Lightbulb, Sparkles } from "lucide-react"
 import { toast } from "sonner"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
+import { FixItStudio } from "@/components/fix-it-studio"
 
 interface AnalysisResult {
     id: string
@@ -26,8 +25,6 @@ export default function ResultDetailPage() {
     const id = params?.id as string
     const [result, setResult] = useState<AnalysisResult | null>(null)
     const [isLoading, setIsLoading] = useState(true)
-    const [isExporting, setIsExporting] = useState(false)
-    const reportRef = useRef<HTMLDivElement>(null)
     const router = useRouter()
 
     useEffect(() => {
@@ -49,42 +46,6 @@ export default function ResultDetailPage() {
 
         fetchAnalysis()
     }, [id, router])
-
-    const handleDownloadPDF = async () => {
-        if (!reportRef.current || !result) return
-
-        setIsExporting(true)
-        try {
-            // Dynamically import html2pdf to avoid SSR issues
-            const html2pdf = (await import("html2pdf.js")).default
-
-            await document.fonts.ready
-            await new Promise(r => setTimeout(r, 800))
-
-            const element = reportRef.current
-            const opt = {
-                margin: [10, 10, 10, 10] as [number, number, number, number],
-                filename: `AQMD-Analysis-${result.id.slice(0, 8)}.pdf`,
-                image: { type: "jpeg" as "jpeg", quality: 1.0 },
-                html2canvas: {
-                    scale: 3,
-                    useCORS: true,
-                    letterRendering: true,
-                    backgroundColor: "#ffffff",
-                    logging: false
-                },
-                jsPDF: { unit: "mm", format: "a4", orientation: "portrait" as "portrait" }
-            }
-
-            await html2pdf().set(opt).from(element).save()
-            toast.success("Academic report exported successfully")
-        } catch (err) {
-            console.error("PDF Export error:", err)
-            toast.error("Failed to generate PDF. Check browser console.")
-        } finally {
-            setIsExporting(false)
-        }
-    }
 
     const handleShare = () => {
         const url = window.location.href
@@ -134,20 +95,10 @@ export default function ResultDetailPage() {
                         <Button variant="outline" size="sm" onClick={handleShare} className="rounded-full px-4 border-primary/20">
                             <Share2 className="w-3.5 h-3.5 mr-2" /> Share
                         </Button>
-                        <Button
-                            size="sm"
-                            onClick={handleDownloadPDF}
-                            disabled={isExporting}
-                            className="rounded-full px-6 shadow-xl shadow-primary/20 active:scale-95 transition-all"
-                        >
-                            {isExporting ? <Loader2 className="w-3.5 h-3.5 animate-spin mr-2" /> : <FileText className="w-3.5 h-3.5 mr-2" />}
-                            {isExporting ? "Exporting..." : "Download Report"}
-                        </Button>
                     </div>
                 </motion.div>
 
                 <motion.div
-                    ref={reportRef}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-white rounded-[2rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.08)] border border-black/5 overflow-hidden"
@@ -203,7 +154,7 @@ export default function ResultDetailPage() {
                             <div className="lg:col-span-7 space-y-4">
                                 <span className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-widest border ${result.intentScore >= 80 ? 'bg-emerald-50 text-emerald-700 border-emerald-100' :
                                     result.intentScore >= 50 ? 'bg-amber-50 text-amber-700 border-amber-100' :
-                                        'bg-red-50 text-red-700 border-red-100'
+                                        'bg-red-50 text-red-100 border-red-100'
                                     }`}>
                                     <ScoreIcon className="w-3.5 h-3.5" />
                                     {result.mismatchType}
@@ -229,7 +180,7 @@ export default function ResultDetailPage() {
                                 </div>
                                 <div className="space-y-4">
                                     <h4 className="flex items-center text-[11px] font-black uppercase tracking-widest text-primary/60">
-                                        <FileText className="w-3.5 h-3.5 mr-2" /> Respondent Submission
+                                        <Sparkles className="w-3.5 h-3.5 mr-2" /> Respondent Submission
                                     </h4>
                                     <div className="p-6 rounded-3xl bg-gray-50/50 border border-gray-100 text-gray-800 text-sm leading-relaxed font-serif shadow-inner">
                                         {result.answer}
@@ -265,6 +216,13 @@ export default function ResultDetailPage() {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Interactive Fix-It Studio Integration */}
+                        <FixItStudio
+                            question={result.question}
+                            initialAnswer={result.answer}
+                            initialScore={result.intentScore}
+                        />
 
                         <div className="pt-12 border-t border-gray-50 flex flex-col md:flex-row items-center justify-between gap-4">
                             <div className="flex items-center gap-2">
