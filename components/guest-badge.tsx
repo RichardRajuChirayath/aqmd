@@ -1,16 +1,44 @@
 "use client"
 
-import { useGuestId } from "@/lib/guest-identity"
-import { ShieldCheck, User, Fingerprint } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useGuestProfile } from "@/lib/guest-identity"
+import { ShieldCheck, Fingerprint, Edit2 } from "lucide-react"
+import { motion } from "framer-motion"
+import { useState } from "react"
+import { Input } from "@/components/ui/input"
+import { toast } from "sonner"
 
 export function GuestBadge() {
-    const guestId = useGuestId()
+    const { guestId, guestName, updateName } = useGuestProfile()
+    const [isEditing, setIsEditing] = useState(false)
+    const [tempName, setTempName] = useState("")
 
     if (!guestId) return null
 
-    // Shorten the ID for display
     const shortId = guestId.split("-")[0].toUpperCase()
+    const displayName = guestName || shortId
+
+    const handleStartEdit = () => {
+        setTempName(guestName)
+        setIsEditing(true)
+    }
+
+    const handleSave = async () => {
+        if (tempName.trim()) {
+            updateName(tempName.trim())
+            // Sync with server for leaderboard
+            try {
+                await fetch("/api/leaderboard", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ guestId, name: tempName.trim() })
+                })
+            } catch (e) {
+                console.error("Failed to sync name:", e)
+            }
+            toast.success("Name saved! You'll appear on the leaderboard.")
+        }
+        setIsEditing(false)
+    }
 
     return (
         <div className="fixed top-2 right-2 sm:top-4 sm:right-4 z-50">
@@ -24,20 +52,30 @@ export function GuestBadge() {
                 </div>
                 <div>
                     <div className="flex items-center gap-1">
-                        <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-wider text-primary/60 hidden sm:inline">Guest</span>
                         <ShieldCheck className="w-2.5 h-2.5 text-emerald-500" />
                     </div>
-                    <p className="text-[9px] sm:text-[10px] font-mono font-bold text-foreground">
-                        {shortId}
-                    </p>
-                </div>
-
-                {/* Tooltip on hover - hidden on mobile */}
-                <div className="hidden sm:block absolute top-full mt-2 right-0 w-40 p-2 bg-black/90 text-white text-[9px] rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none leading-relaxed border border-white/10 shadow-xl">
-                    <p className="font-bold mb-0.5 flex items-center gap-1 text-primary">
-                        <User className="w-2.5 h-2.5" /> Anonymous
-                    </p>
-                    Private session. No signup needed.
+                    {isEditing ? (
+                        <Input
+                            value={tempName}
+                            onChange={(e) => setTempName(e.target.value)}
+                            placeholder="Your name"
+                            className="h-5 text-[9px] w-20 px-1"
+                            autoFocus
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") handleSave()
+                                if (e.key === "Escape") setIsEditing(false)
+                            }}
+                            onBlur={handleSave}
+                        />
+                    ) : (
+                        <p
+                            className="text-[9px] sm:text-[10px] font-mono font-bold text-foreground cursor-pointer hover:text-primary transition-colors flex items-center gap-1"
+                            onClick={handleStartEdit}
+                        >
+                            {displayName}
+                            <Edit2 className="w-2 h-2 opacity-50" />
+                        </p>
+                    )}
                 </div>
             </motion.div>
         </div>

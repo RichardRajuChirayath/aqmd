@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 
 const GUEST_ID_KEY = "aqmd_guest_id"
+const GUEST_NAME_KEY = "aqmd_guest_name"
 
 function generateGuestId(): string {
     // Generate a UUID v4
@@ -24,6 +25,16 @@ export function getGuestId(): string {
     return guestId
 }
 
+export function getGuestName(): string {
+    if (typeof window === "undefined") return ""
+    return localStorage.getItem(GUEST_NAME_KEY) || ""
+}
+
+export function setGuestName(name: string): void {
+    if (typeof window === "undefined") return
+    localStorage.setItem(GUEST_NAME_KEY, name.trim())
+}
+
 export function useGuestId(): string {
     const [guestId, setGuestId] = useState<string>("")
 
@@ -32,4 +43,21 @@ export function useGuestId(): string {
     }, [])
 
     return guestId
+}
+
+export function useGuestProfile() {
+    const [guestId, setGuestIdState] = useState<string>("")
+    const [guestName, setGuestNameState] = useState<string>("")
+
+    useEffect(() => {
+        setGuestIdState(getGuestId())
+        setGuestNameState(getGuestName())
+    }, [])
+
+    const updateName = (name: string) => {
+        setGuestName(name)
+        setGuestNameState(name)
+    }
+
+    return { guestId, guestName, updateName }
 }

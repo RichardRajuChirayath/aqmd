@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { useGuestId } from "@/lib/guest-identity"
+import { Trash2, Loader2 } from "lucide-react"
+import { toast } from "sonner"
 
 interface HistoryItem {
   id: string
@@ -17,31 +19,57 @@ interface HistoryItem {
 export default function HistoryPage() {
   const [history, setHistory] = useState<HistoryItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isClearing, setIsClearing] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
   const guestId = useGuestId()
 
-  useEffect(() => {
-    if (!guestId) return // Wait for guestId to be available
-
-    async function fetchHistory() {
-      try {
-        const response = await fetch(`/api/history?guestId=${encodeURIComponent(guestId)}`)
-        if (!response.ok) {
-          throw new Error("Failed to fetch history")
-        }
-        const data = await response.json()
-        setHistory(data)
-      } catch (err) {
-        console.error("Error fetching history:", err)
-        setError("Failed to load history")
-      } finally {
-        setIsLoading(false)
+  const fetchHistory = async () => {
+    if (!guestId) return
+    try {
+      const response = await fetch(`/api/history?guestId=${encodeURIComponent(guestId)}`)
+      if (!response.ok) {
+        throw new Error("Failed to fetch history")
       }
+      const data = await response.json()
+      setHistory(data)
+    } catch (err) {
+      console.error("Error fetching history:", err)
+      setError("Failed to load history")
+    } finally {
+      setIsLoading(false)
     }
+  }
 
+  useEffect(() => {
     fetchHistory()
   }, [guestId])
+
+  const handleClearHistory = async () => {
+    if (!confirm("Are you sure you want to clear all your history? This cannot be undone.")) {
+      return
+    }
+
+    setIsClearing(true)
+    try {
+      const response = await fetch(`/api/clear-history?guestId=${encodeURIComponent(guestId)}`, {
+        method: "DELETE"
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to clear history")
+      }
+
+      const data = await response.json()
+      setHistory([])
+      toast.success(`Cleared ${data.deleted.analyses} analyses and ${data.deleted.pathways} pathways`)
+    } catch (err) {
+      console.error("Error clearing history:", err)
+      toast.error("Failed to clear history")
+    } finally {
+      setIsClearing(false)
+    }
+  }
 
   const getScoreColor = (score: number) => {
     if (score >= 80) return "bg-emerald-100 text-emerald-800 border-emerald-200"
@@ -66,6 +94,7 @@ export default function HistoryPage() {
   if (isLoading) {
     return (
       <main className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-6 h-6 animate-spin text-primary mr-2" />
         <p className="text-muted-foreground">Loading history...</p>
       </main>
     )
@@ -94,27 +123,45 @@ export default function HistoryPage() {
             </CardContent>
           </Card>
         ) : (
-          <div className="space-y-4">
-            {history.map((item) => (
-              <Card
-                key={item.id}
-                className="glass-card cursor-pointer hover:border-primary/20 transition-colors"
-                onClick={() => router.push(`/result/${item.id}`)}
+          <>
+            <div className="flex justify-end mb-4">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleClearHistory}
+                disabled={isClearing}
+                className="gap-2 text-red-500 hover:text-red-600 hover:bg-red-50 border-red-200"
               >
-                <CardHeader className="pb-3 px-6 pt-6">
-                  <div className="flex items-start justify-between gap-6">
-                    <CardTitle className="font-serif text-lg font-medium leading-relaxed">
-                      {truncateQuestion(item.question)}
-                    </CardTitle>
-                    <Badge variant="outline" className={`px-4 py-1 font-semibold ${getScoreColor(item.intentScore)}`}>
-                      {item.intentScore}%
-                    </Badge>
-                  </div>
-                  <CardDescription className="text-xs font-mono mt-2">{formatDate(item.createdAt)}</CardDescription>
-                </CardHeader>
-              </Card>
-            ))}
-          </div>
+                {isClearing ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Trash2 className="w-4 h-4" />
+                )}
+                Clear All History
+              </Button>
+            </div>
+            <div className="space-y-4">
+              {history.map((item) => (
+                <Card
+                  key={item.id}
+                  className="glass-card cursor-pointer hover:border-primary/20 transition-colors"
+                  onClick={() => router.push(`/result/${item.id}`)}
+                >
+                  <CardHeader className="pb-3 px-6 pt-6">
+                    <div className="flex items-start justify-between gap-6">
+                      <CardTitle className="font-serif text-lg font-medium leading-relaxed">
+                        {truncateQuestion(item.question)}
+                      </CardTitle>
+                      <Badge variant="outline" className={`px-4 py-1 font-semibold ${getScoreColor(item.intentScore)}`}>
+                        {item.intentScore}%
+                      </Badge>
+                    </div>
+                    <CardDescription className="text-xs font-mono mt-2">{formatDate(item.createdAt)}</CardDescription>
+                  </CardHeader>
+                </Card>
+              ))}
+            </div>
+          </>
         )}
 
         <div className="mt-8 text-center">

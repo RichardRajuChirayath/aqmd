@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion"
 interface LeaderboardEntry {
     guestId: string
     fullId: string
+    displayName: string
     analyses: number
     pathways: number
     total: number
@@ -74,8 +75,8 @@ export function Leaderboard() {
                                 }`}
                         >
                             {getRankIcon(index)}
-                            <span className="font-mono text-xs font-bold text-foreground flex-1">
-                                {leader.guestId}
+                            <span className="font-mono text-xs font-bold text-foreground flex-1 truncate">
+                                {leader.displayName}
                             </span>
                             <div className="flex items-center gap-1">
                                 <span className="text-[10px] font-bold text-primary bg-primary/10 px-1.5 py-0.5 rounded">

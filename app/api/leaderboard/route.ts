@@ -2,6 +2,10 @@ import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 export const dynamic = 'force-dynamic'
 
+// Simple in-memory name storage (in production, this should be in database)
+// This will reset on server restart, but works for demo purposes
+const nameStore = new Map<string, string>()
+
 export async function GET() {
     try {
         // Get leaderboard: count analyses and pathways per guestId
@@ -23,7 +27,7 @@ export async function GET() {
 
         // Combine scores
         const scoreMap = new Map<string, { analyses: number; pathways: number; total: number }>()
-
+        
         for (const leader of analysisLeaders) {
             scoreMap.set(leader.guestId, {
                 analyses: leader._count.id,
@@ -31,7 +35,7 @@ export async function GET() {
                 total: leader._count.id
             })
         }
-
+        
         for (const leader of pathwayLeaders) {
             const existing = scoreMap.get(leader.guestId)
             if (existing) {
@@ -51,6 +55,7 @@ export async function GET() {
             .map(([guestId, scores]) => ({
                 guestId: guestId.split("-")[0].toUpperCase(),
                 fullId: guestId,
+                displayName: nameStore.get(guestId) || guestId.split("-")[0].toUpperCase(),
                 ...scores
             }))
             .sort((a, b) => b.total - a.total)
@@ -60,5 +65,23 @@ export async function GET() {
     } catch (error: any) {
         console.error("Leaderboard error:", error?.message || error)
         return NextResponse.json({ error: "Failed to fetch leaderboard" }, { status: 500 })
+    }
+}
+
+// POST endpoint to update user's display name
+export async function POST(request: Request) {
+    try {
+        const { guestId, name } = await request.json()
+        
+        if (!guestId || !name) {
+            return NextResponse.json({ error: "guestId and name are required" }, { status: 400 })
+        }
+
+        nameStore.set(guestId, name.trim())
+        
+        return NextResponse.json({ success: true, name: name.trim() })
+    } catch (error: any) {
+        console.error("Update name error:", error?.message || error)
+        return NextResponse.json({ error: "Failed to update name" }, { status: 500 })
     }
 }
