@@ -89,6 +89,10 @@ export async function POST(request: Request) {
         })
     } catch (error: any) {
         console.error("Document analysis error:", error?.message || error)
-        return NextResponse.json({ error: "Failed to analyze document" }, { status: 500 })
+        // Return the actual error message for debugging purposes
+        return NextResponse.json(
+            { error: error?.message || "Failed to analyze document", details: String(error) },
+            { status: 500 }
+        )
     }
 }
