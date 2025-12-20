@@ -48,6 +48,7 @@
     "framer-motion": "^12.23.26",
     "groq-sdk": "^0.37.0",
     "html2canvas": "^1.4.1",
+    "html2pdf.js": "^0.12.1",
     "input-otp": "1.4.1",
     "jspdf": "^3.0.4",
     "lucide-react": "^0.454.0",

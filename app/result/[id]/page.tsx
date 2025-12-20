@@ -7,8 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Download, Share2, ArrowLeft, Loader2 } from "lucide-react"
 import { toast } from "sonner"
-import jsPDF from "jspdf"
-import html2canvas from "html2canvas"
+import html2pdf from "html2pdf.js"
 
 interface AnalysisResult {
     id: string
@@ -60,61 +59,23 @@ export default function ResultDetailPage() {
             // Add a small delay to ensure any dynamic content is rendered
             await new Promise(r => setTimeout(r, 600))
 
-            // CRITICAL: Force all colors to HEX/HSL for html2canvas compatibility
-            const style = document.createElement("style")
-            style.innerHTML = `
-                .pdf-capture-view * {
-                    color-scheme: light !important;
-                    -webkit-print-color-adjust: exact !important;
-                }
-                .pdf-capture-view {
-                    background: white !important;
-                    color: black !important;
-                }
-                /* Override any potential oklch colors with basic ones for the capture duration */
-                .pdf-capture-view svg { color: #3b82f6 !important; }
-                .pdf-capture-view .bg-blue-50 { background-color: #eff6ff !important; }
-                .pdf-capture-view .border-blue-100 { border-color: #dbeafe !important; }
-                .pdf-capture-view .text-blue-600 { color: #2563eb !important; }
-                .pdf-capture-view .bg-emerald-50 { background-color: #ecfdf5 !important; }
-                .pdf-capture-view .border-emerald-100 { border-color: #d1fae5 !important; }
-                .pdf-capture-view .text-emerald-700 { color: #047857 !important; }
-                .pdf-capture-view .bg-amber-50 { background-color: #fffbeb !important; }
-                .pdf-capture-view .border-amber-100 { border-color: #fef3c7 !important; }
-                .pdf-capture-view .text-amber-700 { color: #b45309 !important; }
-                .pdf-capture-view .bg-red-50 { background-color: #fef2f2 !important; }
-                .pdf-capture-view .border-red-100 { border-color: #fee2e2 !important; }
-                .pdf-capture-view .text-red-700 { color: #b91c1c !important; }
-            `
-            document.head.appendChild(style)
-
-            if (reportRef.current) {
-                reportRef.current.classList.add("pdf-capture-view")
+            const element = reportRef.current
+            const opt = {
+                margin: 10,
+                filename: `AQMD-Report-${result.id.slice(0, 8)}.pdf`,
+                image: { type: "jpeg", quality: 0.98 },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
+                    letterRendering: true,
+                    backgroundColor: "#ffffff",
+                },
+                jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
             }
 
-            const canvas = await html2canvas(reportRef.current!, {
-                scale: 2,
-                useCORS: true,
-                logging: false,
-                backgroundColor: "#ffffff",
-                windowWidth: reportRef.current?.scrollWidth,
-                windowHeight: reportRef.current?.scrollHeight
-            })
+            // New approach using html2pdf.js wrapper
+            await html2pdf().set(opt).from(element).save()
 
-            // Cleanup
-            document.head.removeChild(style)
-            if (reportRef.current) {
-                reportRef.current.classList.remove("pdf-capture-view")
-            }
-
-            const imgData = canvas.toDataURL("image/png")
-            const pdf = new jsPDF("p", "mm", "a4")
-            const pdfWidth = pdf.internal.pageSize.getWidth()
-            const pdfHeight = (canvas.height * pdfWidth) / canvas.width
-
-            // If height exceeds A4, we might need multiple pages, but for now fixed scale is better
-            pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight)
-            pdf.save(`AQMD-Report-${result.id.slice(0, 8)}.pdf`)
             toast.success("Report downloaded successfully")
         } catch (err) {
             console.error("PDF Export error:", err)
