@@ -58,16 +58,54 @@ export default function ResultDetailPage() {
             await document.fonts.ready
 
             // Add a small delay to ensure any dynamic content is rendered
-            await new Promise(r => setTimeout(r, 500))
+            await new Promise(r => setTimeout(r, 600))
 
-            const canvas = await html2canvas(reportRef.current, {
+            // CRITICAL: Force all colors to HEX/HSL for html2canvas compatibility
+            const style = document.createElement("style")
+            style.innerHTML = `
+                .pdf-capture-view * {
+                    color-scheme: light !important;
+                    -webkit-print-color-adjust: exact !important;
+                }
+                .pdf-capture-view {
+                    background: white !important;
+                    color: black !important;
+                }
+                /* Override any potential oklch colors with basic ones for the capture duration */
+                .pdf-capture-view svg { color: #3b82f6 !important; }
+                .pdf-capture-view .bg-blue-50 { background-color: #eff6ff !important; }
+                .pdf-capture-view .border-blue-100 { border-color: #dbeafe !important; }
+                .pdf-capture-view .text-blue-600 { color: #2563eb !important; }
+                .pdf-capture-view .bg-emerald-50 { background-color: #ecfdf5 !important; }
+                .pdf-capture-view .border-emerald-100 { border-color: #d1fae5 !important; }
+                .pdf-capture-view .text-emerald-700 { color: #047857 !important; }
+                .pdf-capture-view .bg-amber-50 { background-color: #fffbeb !important; }
+                .pdf-capture-view .border-amber-100 { border-color: #fef3c7 !important; }
+                .pdf-capture-view .text-amber-700 { color: #b45309 !important; }
+                .pdf-capture-view .bg-red-50 { background-color: #fef2f2 !important; }
+                .pdf-capture-view .border-red-100 { border-color: #fee2e2 !important; }
+                .pdf-capture-view .text-red-700 { color: #b91c1c !important; }
+            `
+            document.head.appendChild(style)
+
+            if (reportRef.current) {
+                reportRef.current.classList.add("pdf-capture-view")
+            }
+
+            const canvas = await html2canvas(reportRef.current!, {
                 scale: 2,
                 useCORS: true,
                 logging: false,
                 backgroundColor: "#ffffff",
-                windowWidth: reportRef.current.scrollWidth,
-                windowHeight: reportRef.current.scrollHeight
+                windowWidth: reportRef.current?.scrollWidth,
+                windowHeight: reportRef.current?.scrollHeight
             })
+
+            // Cleanup
+            document.head.removeChild(style)
+            if (reportRef.current) {
+                reportRef.current.classList.remove("pdf-capture-view")
+            }
 
             const imgData = canvas.toDataURL("image/png")
             const pdf = new jsPDF("p", "mm", "a4")

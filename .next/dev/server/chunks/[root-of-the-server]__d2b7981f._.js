@@ -71,6 +71,8 @@ const __TURBOPACK__default__export__ = prisma;
 __turbopack_context__.s([
     "GET",
     ()=>GET,
+    "POST",
+    ()=>POST,
     "dynamic",
     ()=>dynamic
 ]);
@@ -79,6 +81,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$prisma$2e$ts__$5b$app
 ;
 ;
 const dynamic = 'force-dynamic';
+// Simple in-memory name storage (in production, this should be in database)
+// This will reset on server restart, but works for demo purposes
+const nameStore = new Map();
 async function GET() {
     try {
         // Get leaderboard: count analyses and pathways per guestId
@@ -146,6 +151,7 @@ async function GET() {
         const leaderboard = Array.from(scoreMap.entries()).map(([guestId, scores])=>({
                 guestId: guestId.split("-")[0].toUpperCase(),
                 fullId: guestId,
+                displayName: nameStore.get(guestId) || guestId.split("-")[0].toUpperCase(),
                 ...scores
             })).sort((a, b)=>b.total - a.total).slice(0, 10);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$10_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
@@ -155,6 +161,30 @@ async function GET() {
         console.error("Leaderboard error:", error?.message || error);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$10_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             error: "Failed to fetch leaderboard"
+        }, {
+            status: 500
+        });
+    }
+}
+async function POST(request) {
+    try {
+        const { guestId, name } = await request.json();
+        if (!guestId || !name) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$10_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: "guestId and name are required"
+            }, {
+                status: 400
+            });
+        }
+        nameStore.set(guestId, name.trim());
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$10_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+            success: true,
+            name: name.trim()
+        });
+    } catch (error) {
+        console.error("Update name error:", error?.message || error);
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$10_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+            error: "Failed to update name"
         }, {
             status: 500
         });

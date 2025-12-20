@@ -35,7 +35,7 @@ export function GuestBadge() {
             } catch (e) {
                 console.error("Failed to sync name:", e)
             }
-            toast.success("Name saved! You'll appear on the leaderboard.")
+            toast.success("Name has been updated!")
         }
         setIsEditing(false)
     }
@@ -51,9 +51,6 @@ export function GuestBadge() {
                     <Fingerprint className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                 </div>
                 <div>
-                    <div className="flex items-center gap-1">
-                        <ShieldCheck className="w-2.5 h-2.5 text-emerald-500" />
-                    </div>
                     {isEditing ? (
                         <Input
                             value={tempName}
@@ -68,13 +65,22 @@ export function GuestBadge() {
                             onBlur={handleSave}
                         />
                     ) : (
-                        <p
-                            className="text-[9px] sm:text-[10px] font-mono font-bold text-foreground cursor-pointer hover:text-primary transition-colors flex items-center gap-1"
+                        <div
+                            className="flex flex-col cursor-pointer group/name"
                             onClick={handleStartEdit}
                         >
-                            {displayName}
-                            <Edit2 className="w-2 h-2 opacity-50" />
-                        </p>
+                            <div className="flex items-center gap-1">
+                                <ShieldCheck className="w-2 h-2 text-emerald-500" />
+                                <p className="text-[9px] sm:text-[10px] font-mono font-bold text-foreground">
+                                    {shortId}
+                                </p>
+                            </div>
+                            {guestName && (
+                                <p className="text-[8px] font-bold text-primary/80 uppercase tracking-tighter -mt-0.5">
+                                    {guestName}
+                                </p>
+                            )}
+                        </div>
                     )}
                 </div>
             </motion.div>
