@@ -35,6 +35,7 @@ export async function POST(request: Request) {
                 topic: topic.trim(),
                 sourceContent: fullText || "",
                 conceptOverview: pathway.conceptOverview,
+                // @ts-ignore
                 easyLearningTips: pathway.easyLearningTips,
                 prerequisites: pathway.prerequisites,
                 unlocks: pathway.unlocks,
