@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { useGuestId } from "@/lib/guest-identity"
 import { Trash2, Loader2 } from "lucide-react"
 import { toast } from "sonner"
+import { apiUrl } from "@/lib/api-url"
 
 interface HistoryItem {
   id: string
@@ -27,7 +28,7 @@ export default function HistoryPage() {
   const fetchHistory = async () => {
     if (!guestId) return
     try {
-      const response = await fetch(`/api/history?guestId=${encodeURIComponent(guestId)}`)
+      const response = await fetch(apiUrl(`/api/history?guestId=${encodeURIComponent(guestId)}`))
       if (!response.ok) {
         throw new Error("Failed to fetch history")
       }
@@ -52,7 +53,7 @@ export default function HistoryPage() {
 
     setIsClearing(true)
     try {
-      const response = await fetch(`/api/clear-history?guestId=${encodeURIComponent(guestId)}`, {
+      const response = await fetch(apiUrl(`/api/clear-history?guestId=${encodeURIComponent(guestId)}`), {
         method: "DELETE"
       })
 

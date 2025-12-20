@@ -13,6 +13,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion"
 import { toast } from "sonner"
 import { useGuestId } from "@/lib/guest-identity"
+import { apiUrl } from "@/lib/api-url"
 
 export default function PathwaysPage() {
     const [topic, setTopic] = useState("")
@@ -139,7 +140,7 @@ export default function PathwaysPage() {
                 const formData = new FormData()
                 formData.append("file", file)
 
-                const analyzeRes = await fetch("/api/analyze-document", {
+                const analyzeRes = await fetch(apiUrl("/api/analyze-document"), {
                     method: "POST",
                     body: formData,
                 })
@@ -160,7 +161,7 @@ export default function PathwaysPage() {
                 context = analyzeData.fullText || ""
             }
 
-            const response = await fetch("/api/generate-pathway", {
+            const response = await fetch(apiUrl("/api/generate-pathway"), {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ topic: finalTopic, guestId, fullText: context }),

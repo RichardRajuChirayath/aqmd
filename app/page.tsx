@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label"
 import { LoadingFlow } from "@/components/loading-flow"
 import { useGuestId } from "@/lib/guest-identity"
+import { apiUrl } from "@/lib/api-url"
 
 export default function HomePage() {
   const [question, setQuestion] = useState("")
@@ -21,7 +22,7 @@ export default function HomePage() {
 
     setIsLoading(true)
     try {
-      const response = await fetch("/api/analyze-intent", {
+      const response = await fetch(apiUrl("/api/analyze-intent"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question, answer, guestId }),

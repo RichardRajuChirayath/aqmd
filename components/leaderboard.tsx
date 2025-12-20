@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Trophy, Medal, Award, Flame, TrendingUp } from "lucide-react"
+import { apiUrl } from "@/lib/api-url"
 import { motion, AnimatePresence } from "framer-motion"
 
 interface LeaderboardEntry {
@@ -19,7 +20,7 @@ export function Leaderboard() {
     const [isOpen, setIsOpen] = useState(false)
 
     useEffect(() => {
-        fetch("/api/leaderboard")
+        fetch(apiUrl("/api/leaderboard"))
             .then(res => res.json())
             .then(data => {
                 setLeaders(data.leaderboard || [])

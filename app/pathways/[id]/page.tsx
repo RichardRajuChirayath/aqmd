@@ -10,6 +10,7 @@ import {
     AlertTriangle, GraduationCap, SkipForward, ListOrdered, Trophy, Route
 } from "lucide-react"
 import { toast } from "sonner"
+import { apiUrl } from "@/lib/api-url"
 
 interface CrossSubjectLink {
     subject: string
@@ -52,7 +53,7 @@ export default function PathwayResultPage() {
     useEffect(() => {
         async function fetchPathway() {
             try {
-                const response = await fetch(`/api/pathway/${id}`)
+                const response = await fetch(apiUrl(`/api/pathway/${id}`))
                 if (!response.ok) throw new Error("Pathway not found")
                 const data = await response.json()
                 setPathway(data)

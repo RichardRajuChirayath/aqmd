@@ -1,0 +1,9 @@
+{
+    "appId": "com.aqmd.app",
+    "appName": "AQMD",
+    "webDir": "public",
+    "server": {
+        "url": "https://aqmd-production.up.railway.app",
+        "cleartext": true
+    }
+}

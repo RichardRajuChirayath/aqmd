@@ -7,6 +7,7 @@ import { Share2, ArrowLeft, Loader2, Target, CheckCircle2, AlertCircle, Lightbul
 import { toast } from "sonner"
 import { motion } from "framer-motion"
 import { FixItStudio } from "@/components/fix-it-studio"
+import { apiUrl } from "@/lib/api-url"
 
 interface AnalysisResult {
     id: string
@@ -31,7 +32,7 @@ export default function ResultDetailPage() {
         async function fetchAnalysis() {
             if (!id) return
             try {
-                const response = await fetch(`/api/analysis/${id}`)
+                const response = await fetch(apiUrl(`/api/analysis/${id}`))
                 if (!response.ok) throw new Error("Analysis not found")
                 const data = await response.json()
                 setResult(data)

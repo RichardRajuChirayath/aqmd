@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { RefreshCcw, Sparkles, CheckCircle2, TrendingUp, Zap } from "lucide-react"
 import debounce from "lodash.debounce"
+import { apiUrl } from "@/lib/api-url"
 
 interface FixItStudioProps {
     question: string
@@ -25,7 +26,7 @@ export function FixItStudio({ question, initialAnswer, initialScore }: FixItStud
     const analyze = async (currentAnswer: string) => {
         setIsAnalyzing(true)
         try {
-            const res = await fetch("/api/analyze-score", {
+            const res = await fetch(apiUrl("/api/analyze-score"), {
                 method: "POST",
                 body: JSON.stringify({ question, answer: currentAnswer, originalScore: initialScore })
             })

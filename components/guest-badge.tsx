@@ -6,6 +6,7 @@ import { motion } from "framer-motion"
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
+import { apiUrl } from "@/lib/api-url"
 
 export function GuestBadge() {
     const { guestId, guestName, updateName } = useGuestProfile()
@@ -27,7 +28,7 @@ export function GuestBadge() {
             updateName(tempName.trim())
             // Sync with server for leaderboard
             try {
-                await fetch("/api/leaderboard", {
+                await fetch(apiUrl("/api/leaderboard"), {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ guestId, name: tempName.trim() })
