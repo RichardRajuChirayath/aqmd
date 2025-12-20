@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Analysis {
+  id              String   @id @default(uuid())
+  guestId         String   @default("")
+  question        String   @db.Text
+  answer          String   @db.Text
+  intentScore     Int
+  mismatchType    String
+  explanation     String   @db.Text
+  expectedIntent  String   @db.Text
+  suggestedReframe String  @db.Text
+  createdAt       DateTime @default(now())
+
+  @@index([guestId])
+  @@map("analyses")
+}
+
+model Pathway {
+  id                  String   @id @default(uuid())
+  guestId             String   @default("")
+  topic               String
+  prerequisites       Json     // Array of prerequisite topics
+  unlocks             Json     // Array of topics this unlocks
+  crossSubjectLinks   Json     // Array of cross-subject connections
+  commonMistakes      Json     // Array of common mistakes
+  examRelevance       String   @db.Text
+  safeToSkip          Json     // Array of topics safe to skip
+  learningOrder       Json     // Array of ordered steps
+  easyLearningTips    Json     @default("[]") // Array of easy learning tips
+  masteryRule         String   @db.Text
+  conceptOverview     String   @default("") @db.Text
+  sourceContent       String   @default("") @db.Text
+  createdAt           DateTime @default(now())
+
+  @@index([guestId])
+  @@map("pathways")
+}

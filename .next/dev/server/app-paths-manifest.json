@@ -1,0 +1,9 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/analyze-document/route": "app/api/analyze-document/route.js",
+  "/api/generate-pathway/route": "app/api/generate-pathway/route.js",
+  "/api/pathway/[id]/route": "app/api/pathway/[id]/route.js",
+  "/page": "app/page.js",
+  "/pathways/[id]/page": "app/pathways/[id]/page.js",
+  "/pathways/page": "app/pathways/page.js"
+}

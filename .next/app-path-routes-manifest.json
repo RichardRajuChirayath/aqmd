@@ -1,0 +1,16 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/api/analysis/[id]/route": "/api/analysis/[id]",
+  "/api/analyze-document/route": "/api/analyze-document",
+  "/api/analyze-intent/route": "/api/analyze-intent",
+  "/api/generate-pathway/route": "/api/generate-pathway",
+  "/api/history/route": "/api/history",
+  "/api/pathway/[id]/route": "/api/pathway/[id]",
+  "/history/page": "/history",
+  "/page": "/",
+  "/pathways/[id]/page": "/pathways/[id]",
+  "/pathways/page": "/pathways",
+  "/result/[id]/page": "/result/[id]",
+  "/result/page": "/result"
+}

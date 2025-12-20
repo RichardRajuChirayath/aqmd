@@ -1,0 +1,16 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/analysis/[id]/route": "app/api/analysis/[id]/route.js",
+  "/api/analyze-document/route": "app/api/analyze-document/route.js",
+  "/api/analyze-intent/route": "app/api/analyze-intent/route.js",
+  "/api/generate-pathway/route": "app/api/generate-pathway/route.js",
+  "/api/history/route": "app/api/history/route.js",
+  "/api/pathway/[id]/route": "app/api/pathway/[id]/route.js",
+  "/history/page": "app/history/page.js",
+  "/page": "app/page.js",
+  "/pathways/[id]/page": "app/pathways/[id]/page.js",
+  "/pathways/page": "app/pathways/page.js",
+  "/result/[id]/page": "app/result/[id]/page.js",
+  "/result/page": "app/result/page.js"
+}

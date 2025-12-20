@@ -1,0 +1,3 @@
+{
+  "/api/analyze-intent/route": "app/api/analyze-intent/route.js"
+}
