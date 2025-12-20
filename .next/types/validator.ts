@@ -128,6 +128,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../app/api/clear-history/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/clear-history">> = Specific
+  const handler = {} as typeof import("../../app/api/clear-history/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../app/api/generate-pathway/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/generate-pathway">> = Specific
@@ -141,6 +150,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/history">> = Specific
   const handler = {} as typeof import("../../app/api/history/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/api/leaderboard/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/leaderboard">> = Specific
+  const handler = {} as typeof import("../../app/api/leaderboard/route.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check

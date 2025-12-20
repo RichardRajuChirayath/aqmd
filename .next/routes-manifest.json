@@ -85,6 +85,12 @@
       "namedRegex": "^/api/analyze\\-intent(?:/)?$"
     },
     {
+      "page": "/api/clear-history",
+      "regex": "^/api/clear\\-history(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/clear\\-history(?:/)?$"
+    },
+    {
       "page": "/api/generate-pathway",
       "regex": "^/api/generate\\-pathway(?:/)?$",
       "routeKeys": {},
@@ -95,6 +101,12 @@
       "regex": "^/api/history(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/history(?:/)?$"
+    },
+    {
+      "page": "/api/leaderboard",
+      "regex": "^/api/leaderboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/leaderboard(?:/)?$"
     },
     {
       "page": "/history",
