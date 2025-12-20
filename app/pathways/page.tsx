@@ -84,7 +84,7 @@ export default function PathwaysPage() {
         setIsCameraOpen(true)
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: "environment", width: { ideal: 1280 }, height: { ideal: 720 } }
+                video: { facingMode: "environment", width: { ideal: 1920 }, height: { ideal: 1080 } }
             })
             if (videoRef.current) {
                 videoRef.current.srcObject = stream
@@ -144,8 +144,18 @@ export default function PathwaysPage() {
                     body: formData,
                 })
 
-                if (!analyzeRes.ok) throw new Error("Document analysis failed")
                 const analyzeData = await analyzeRes.json()
+
+                if (!analyzeRes.ok || analyzeData.error) {
+                    const errorMsg = analyzeData.error || "Document analysis failed"
+                    if (errorMsg.includes("Could not extract") || errorMsg.includes("OCR")) {
+                        toast.error("Could not read the image. Please try a clearer photo or different file.")
+                    } else {
+                        toast.error(errorMsg)
+                    }
+                    setIsLoading(false)
+                    return
+                }
                 finalTopic = analyzeData.topic
                 context = analyzeData.fullText || ""
             }
@@ -218,12 +228,12 @@ export default function PathwaysPage() {
                             onDrop={handleDrop}
                             onDragOver={handleDragOver}
                             onDragLeave={handleDragLeave}
-                            className={`border-2 border-dashed rounded-2xl p-8 transition-all flex flex-col items-center justify-center gap-4 group/upload relative min-h-[350px]
+                            className={`border-2 border-dashed rounded-2xl p-4 sm:p-8 transition-all flex flex-col items-center justify-center gap-4 group/upload relative min-h-[300px] sm:min-h-[400px]
                 ${isDragging ? 'border-primary bg-primary/10 shadow-[0_0_30px_rgba(var(--primary),0.3)] scale-[1.02]' : file ? 'border-primary/40 bg-primary/5 shadow-inner' : 'border-border hover:border-primary/30 hover:bg-muted/50'}`}
                         >
                             {isCameraOpen ? (
-                                <div className="w-full flex flex-col items-center gap-6">
-                                    <div className="relative w-full max-w-[500px] aspect-video rounded-xl overflow-hidden border-2 border-primary shadow-[0_0_30px_rgba(var(--primary),0.2)] bg-black group/video">
+                                <div className="w-full flex flex-col items-center gap-4 sm:gap-6">
+                                    <div className="relative w-full aspect-[4/3] sm:aspect-video rounded-xl overflow-hidden border-2 border-primary shadow-[0_0_30px_rgba(var(--primary),0.2)] bg-black group/video">
                                         <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover" />
                                         <div className="absolute inset-0 border-[30px] border-black/20 pointer-events-none" />
                                         <div className="absolute inset-x-0 top-0 h-1/4 bg-gradient-to-b from-black/40 to-transparent" />
@@ -353,7 +363,7 @@ export default function PathwaysPage() {
                 </Card>
 
                 {/* Info Grid */}
-                <div className="mt-16 grid grid-cols-4 gap-8">
+                <div className="mt-10 sm:mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8">
                     {[
                         { label: "Vision AI", icon: ImageIcon, text: "OCR & Analysis" },
                         { label: "Path Mapping", icon: Route, text: "Logic Chaining" },

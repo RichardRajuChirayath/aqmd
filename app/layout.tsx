@@ -33,6 +33,7 @@ export const metadata: Metadata = {
 
 import { Toaster } from "sonner"
 import { GuestBadge } from "@/components/guest-badge"
+import { Leaderboard } from "@/components/leaderboard"
 
 export default function RootLayout({
   children,
@@ -41,9 +42,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`font-sans antialiased`}>
+      <body className={`font-sans antialiased min-h-screen flex flex-col`}>
         <GuestBadge />
-        {children}
+        {/* Leaderboard - fixed on left side, hidden on mobile */}
+        <div className="hidden lg:block fixed left-4 top-1/2 -translate-y-1/2 z-40 w-48">
+          <Leaderboard />
+        </div>
+        <main className="flex-1">
+          {children}
+        </main>
+        {/* Footer */}
+        <footer className="py-4 text-center border-t border-border/30 bg-background/50 backdrop-blur-sm">
+          <p className="text-[10px] sm:text-xs text-muted-foreground">
+            Built with <span className="text-red-500">❤️</span> in <span className="font-bold text-orange-500">India</span> 🇮🇳
+          </p>
+        </footer>
         <Analytics />
         <Toaster position="top-center" richColors />
       </body>

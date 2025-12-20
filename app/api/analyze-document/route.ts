@@ -56,9 +56,10 @@ export async function POST(request: Request) {
 
         if (!extractedText.trim()) {
             return NextResponse.json({
-                topic: "Unknown Document",
-                reasoning: "OCR could not extract any text from this image."
-            })
+                error: "Could not extract text from this image. Please try a clearer photo with better lighting, or ensure the document contains readable text.",
+                topic: null,
+                fullText: null
+            }, { status: 400 })
         }
 
         // 2. Use Groq Text Model to infer topic from extracted text
