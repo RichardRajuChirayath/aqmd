@@ -63,9 +63,9 @@ export default function ResultDetailPage() {
 
             const element = reportRef.current
             const opt = {
-                margin: [10, 10, 10, 10],
+                margin: [10, 10, 10, 10] as [number, number, number, number],
                 filename: `AQMD-Analysis-${result.id.slice(0, 8)}.pdf`,
-                image: { type: "jpeg", quality: 1.0 },
+                image: { type: "jpeg" as "jpeg", quality: 1.0 },
                 html2canvas: {
                     scale: 3,
                     useCORS: true,
@@ -73,7 +73,7 @@ export default function ResultDetailPage() {
                     backgroundColor: "#ffffff",
                     logging: false
                 },
-                jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+                jsPDF: { unit: "mm", format: "a4", orientation: "portrait" as "portrait" }
             }
 
             await html2pdf().set(opt).from(element).save()
@@ -202,8 +202,8 @@ export default function ResultDetailPage() {
 
                             <div className="lg:col-span-7 space-y-4">
                                 <span className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-widest border ${result.intentScore >= 80 ? 'bg-emerald-50 text-emerald-700 border-emerald-100' :
-                                        result.intentScore >= 50 ? 'bg-amber-50 text-amber-700 border-amber-100' :
-                                            'bg-red-50 text-red-700 border-red-100'
+                                    result.intentScore >= 50 ? 'bg-amber-50 text-amber-700 border-amber-100' :
+                                        'bg-red-50 text-red-700 border-red-100'
                                     }`}>
                                     <ScoreIcon className="w-3.5 h-3.5" />
                                     {result.mismatchType}
