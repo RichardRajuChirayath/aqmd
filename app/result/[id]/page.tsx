@@ -54,11 +54,19 @@ export default function ResultDetailPage() {
 
         setIsExporting(true)
         try {
+            // Wait for fonts to be ready to prevent rendering issues
+            await document.fonts.ready
+
+            // Add a small delay to ensure any dynamic content is rendered
+            await new Promise(r => setTimeout(r, 500))
+
             const canvas = await html2canvas(reportRef.current, {
                 scale: 2,
                 useCORS: true,
                 logging: false,
-                backgroundColor: "#ffffff"
+                backgroundColor: "#ffffff",
+                windowWidth: reportRef.current.scrollWidth,
+                windowHeight: reportRef.current.scrollHeight
             })
 
             const imgData = canvas.toDataURL("image/png")
@@ -66,6 +74,7 @@ export default function ResultDetailPage() {
             const pdfWidth = pdf.internal.pageSize.getWidth()
             const pdfHeight = (canvas.height * pdfWidth) / canvas.width
 
+            // If height exceeds A4, we might need multiple pages, but for now fixed scale is better
             pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight)
             pdf.save(`AQMD-Report-${result.id.slice(0, 8)}.pdf`)
             toast.success("Report downloaded successfully")
