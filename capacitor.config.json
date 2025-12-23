@@ -3,7 +3,7 @@
     "appName": "AQMD",
     "webDir": "public",
     "server": {
-        "url": "https://aqmd-production.up.railway.app",
-        "cleartext": true
+        "url": "https://www.aqmd.site",
+        "cleartext": false
     }
 }
