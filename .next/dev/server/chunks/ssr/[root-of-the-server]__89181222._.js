@@ -117,17 +117,19 @@ function Input({ className, type, ...props }) {
 "[project]/lib/api-url.ts [app-ssr] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
-// This file provides the base URL for API calls.
-// When running locally (dev server), it uses relative paths.
-// When running as a static export (e.g., Capacitor APK), it uses the deployed Railway URL.
+// Centralized API base URL handling
+// - Local dev      → relative paths
+// - Web (prod)     → https://www.aqmd.site
+// - Capacitor APK  → https://www.aqmd.site
 __turbopack_context__.s([
     "API_BASE_URL",
     ()=>API_BASE_URL,
     "apiUrl",
     ()=>apiUrl
 ]);
-const isStaticExport = ("TURBOPACK compile-time value", "undefined") !== 'undefined' && !window.location.hostname.includes('localhost');
-const API_BASE_URL = ("TURBOPACK compile-time falsy", 0) ? "TURBOPACK unreachable" : '';
+const isBrowser = ("TURBOPACK compile-time value", "undefined") !== 'undefined';
+const isLocalhost = isBrowser && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+const API_BASE_URL = ("TURBOPACK compile-time falsy", 0) ? "TURBOPACK unreachable" : 'https://www.aqmd.site';
 function apiUrl(path) {
     return `${API_BASE_URL}${path}`;
 }

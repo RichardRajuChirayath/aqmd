@@ -1,5 +1,14 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
+  "/api/analysis/[id]/route": "app/api/analysis/[id]/route.js",
+  "/api/analyze-intent/route": "app/api/analyze-intent/route.js",
+  "/api/history/route": "app/api/history/route.js",
   "/api/leaderboard/route": "app/api/leaderboard/route.js",
-  "/page": "app/page.js"
+  "/api/papers/discover/route": "app/api/papers/discover/route.js",
+  "/api/search/route": "app/api/search/route.js",
+  "/history/page": "app/history/page.js",
+  "/page": "app/page.js",
+  "/papers/page": "app/papers/page.js",
+  "/pathways/page": "app/pathways/page.js",
+  "/result/[id]/page": "app/result/[id]/page.js"
 }

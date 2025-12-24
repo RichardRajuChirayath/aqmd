@@ -31,8 +31,10 @@ export const metadata: Metadata = {
 }
 
 import { Toaster } from "sonner"
+import { ThemeProvider } from "@/components/theme-provider"
+import { DashboardNav } from "@/components/dashboard-nav"
 import { GuestBadge } from "@/components/guest-badge"
-import { Leaderboard } from "@/components/leaderboard"
+import { Zap } from "lucide-react"
 
 export default function RootLayout({
   children,
@@ -41,22 +43,33 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`font-sans antialiased min-h-screen flex flex-col`}>
-        <GuestBadge />
-        {/* Leaderboard - fixed on left side, hidden on mobile */}
-        <div className="hidden lg:block fixed left-4 top-1/2 -translate-y-1/2 z-40 w-48">
-          <Leaderboard />
-        </div>
-        <main className="flex-1">
-          {children}
-        </main>
-        {/* Footer */}
-        <footer className="py-4 text-center border-t border-border/30 bg-background/50 backdrop-blur-sm">
-          <p className="text-[10px] sm:text-xs text-muted-foreground">
-            Built with <span className="text-red-500">❤️</span> in <span className="font-bold text-orange-500">India</span> 🇮🇳
-          </p>
-        </footer>
-        <Toaster position="top-center" richColors />
+      <body className={`font-sans antialiased min-h-screen flex flex-col transition-colors duration-300`}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          <div className="flex min-h-screen lg:flex-row flex-col">
+            <DashboardNav />
+            <main className="flex-1 lg:ml-64 pb-20 lg:pb-0">
+              {/* Mobile Only Header */}
+              <div className="lg:hidden flex items-center justify-between px-6 h-16 border-b border-border/50 bg-background/50 backdrop-blur-xl sticky top-0 z-40">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-blue-600 text-white">
+                    <Zap className="w-4 h-4 fill-current" />
+                  </div>
+                  <span className="font-bold text-lg tracking-tight tech-heading gradient-text">AQMD</span>
+                </div>
+                <GuestBadge />
+              </div>
+              {children}
+            </main>
+          </div>
+
+          {/* Footer */}
+          <footer className="py-4 text-center border-t border-border/30 bg-background/50 backdrop-blur-sm lg:ml-64 transition-all">
+            <p className="text-[10px] sm:text-xs text-muted-foreground">
+              Built with <span className="text-red-500">❤️</span> in <span className="font-bold text-orange-500">India</span> 🇮🇳
+            </p>
+          </footer>
+          <Toaster position="top-center" richColors />
+        </ThemeProvider>
       </body>
     </html>
   )

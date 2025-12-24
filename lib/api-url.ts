@@ -1,12 +1,18 @@
-// This file provides the base URL for API calls.
-// When running locally (dev server), it uses relative paths.
-// When running as a static export (e.g., Capacitor APK), it uses the deployed Railway URL.
+// Centralized API base URL handling
+// - Local dev      → relative paths
+// - Web (prod)     → https://www.aqmd.site
+// - Capacitor APK  → https://www.aqmd.site
 
-const isStaticExport = typeof window !== 'undefined' && !window.location.hostname.includes('localhost');
+const isBrowser = typeof window !== 'undefined';
 
-export const API_BASE_URL = isStaticExport
-    ? 'https://aqmd-production.up.railway.app'
-    : '';
+const isLocalhost =
+    isBrowser &&
+    (window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1');
+
+export const API_BASE_URL = isLocalhost
+    ? ''
+    : 'https://www.aqmd.site';
 
 export function apiUrl(path: string): string {
     return `${API_BASE_URL}${path}`;

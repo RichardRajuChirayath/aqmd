@@ -1,3 +1,29 @@
-[00:00:12.333] Server  LOG      ✓ Ready in 11.1s
-[00:00:15.375] Server  LOG      ○ Compiling / ...
-[00:00:21.592] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:01.030] Server  LOG      ✓ Ready in 640ms
+[00:00:09.142] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:15.413] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:45.664] Server  ERROR   (node:7376) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[00:02:31.446] Server  LOG      ✓ Compiled in 556ms
+[00:02:34.136] Server  LOG      ✓ Compiled in 230ms
+[00:03:01.122] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:03:09.642] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:04:31.398] Server  LOG      ✓ Compiled in 118ms
+[00:04:31.536] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:04:37.163] Server  LOG      ✓ Compiled in 223ms
+[00:08:18.717] Server  LOG      ✓ Compiled in 298ms
+[00:08:41.114] Server  ERROR   D:\AQMD (2)\AQMD\.next\dev\server\chunks\ssr\[root-of-the-server]__02637622._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:08:41.117] Server  ERROR    ⨯ ReferenceError: Zap is not defined
+[00:08:41.159] Server  ERROR   D:\AQMD (2)\AQMD\.next\dev\server\chunks\ssr\[root-of-the-server]__02637622._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:08:41.159] Server  ERROR    ⨯ ReferenceError: Zap is not defined
+[00:08:41.203] Server  ERROR   D:\AQMD (2)\AQMD\.next\dev\server\chunks\ssr\[root-of-the-server]__02637622._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:08:41.204] Server  ERROR    ⨯ ReferenceError: Zap is not defined
+[00:08:41.232] Server  ERROR   D:\AQMD (2)\AQMD\.next\dev\server\chunks\ssr\[root-of-the-server]__02637622._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:08:41.232] Server  ERROR    ⨯ ReferenceError: Zap is not defined
+[00:08:41.362] Browser ERROR   uncaughtError: ReferenceError: Zap is not defined
+[00:08:46.478] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:09:22.781] Server  LOG      ✓ Compiled in 275ms
+[00:09:32.509] Browser WARN    You are trying to animate strokeDashoffset from "undefined" to "175.92918860102841". "undefined" is not an animatable value.. For more information and steps for solving, visit https://motion.dev/troubleshooting/value-not-animatable
+[00:09:47.658] Server  LOG      ✓ Compiled in 198ms
+[00:10:33.794] Server  LOG      ✓ Compiled in 254ms
+[00:11:02.670] Server  LOG      ✓ Compiled in 270ms
+[00:11:32.978] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold

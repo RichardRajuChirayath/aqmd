@@ -14,9 +14,21 @@ import { motion, AnimatePresence } from "framer-motion"
 import { toast } from "sonner"
 import { useGuestId } from "@/lib/guest-identity"
 import { apiUrl } from "@/lib/api-url"
+import { useSearchParams } from "next/navigation"
+import { Suspense, useEffect } from "react"
 
-export default function PathwaysPage() {
+function PathwaysContent() {
+    const searchParams = useSearchParams()
     const [topic, setTopic] = useState("")
+
+    useEffect(() => {
+        const subject = searchParams.get('subject')
+        const qtopic = searchParams.get('topic')
+        if (subject || qtopic) {
+            setTopic(`${subject ? subject + ': ' : ''}${qtopic || ''}`)
+        }
+    }, [searchParams])
+
     const [file, setFile] = useState<File | null>(null)
     const [preview, setPreview] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false)
@@ -405,3 +417,12 @@ export default function PathwaysPage() {
         </main>
     )
 }
+
+export default function PathwaysPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 blueprint-grid" />}>
+            <PathwaysContent />
+        </Suspense>
+    )
+}
+

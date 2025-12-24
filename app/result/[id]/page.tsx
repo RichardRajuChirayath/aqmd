@@ -76,7 +76,7 @@ export default function ResultDetailPage() {
     const ScoreIcon = result.intentScore >= 80 ? CheckCircle2 : result.intentScore >= 50 ? AlertCircle : Target
 
     return (
-        <main className="min-h-screen bg-[#faf9f6] py-16 px-4 sm:px-6 lg:px-8">
+        <main className="min-h-screen bg-background py-16 px-4 sm:px-6 lg:px-8">
             <div className="max-w-5xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
@@ -102,26 +102,26 @@ export default function ResultDetailPage() {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-white rounded-[2rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.08)] border border-black/5 overflow-hidden"
+                    className="tech-card overflow-hidden shadow-2xl backdrop-blur-3xl"
                 >
-                    <div className="p-8 sm:p-12 border-b border-gray-50 bg-[#fdfdfd]">
+                    <div className="p-8 sm:p-12 border-b border-border/50 bg-background/50">
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2 mb-2">
                                     <span className="bg-primary/10 text-primary text-[10px] font-black uppercase tracking-[0.2em] px-2 py-0.5 rounded">Official Release</span>
                                 </div>
-                                <h1 className="text-4xl font-serif font-bold text-gray-900 tracking-tight leading-tight">
+                                <h1 className="text-3xl sm:text-4xl font-serif font-bold text-foreground tracking-tight leading-tight">
                                     Academic Intent Analysis
                                 </h1>
-                                <p className="text-gray-500 font-serif italic text-lg leading-relaxed max-w-lg">
+                                <p className="text-muted-foreground font-serif italic text-lg leading-relaxed max-w-lg">
                                     A professional evaluation of alignment between student response and pedagogical intent.
                                 </p>
                             </div>
                             <div className="text-left md:text-right shrink-0">
-                                <div className="inline-block p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Evaluation ID</p>
-                                    <p className="font-mono text-xs font-bold text-gray-900">{result.id.slice(0, 8).toUpperCase()}</p>
-                                    <p className="text-[10px] font-medium text-gray-400 mt-2">{new Date(result.createdAt).toLocaleDateString(undefined, { dateStyle: 'long' })}</p>
+                                <div className="inline-block p-4 rounded-2xl bg-secondary/50 border border-border/50">
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-1">Evaluation ID</p>
+                                    <p className="font-mono text-xs font-bold text-foreground">{result.id.slice(0, 8).toUpperCase()}</p>
+                                    <p className="text-[10px] font-medium text-muted-foreground/60 mt-2">{new Date(result.createdAt).toLocaleDateString(undefined, { dateStyle: 'long' })}</p>
                                 </div>
                             </div>
                         </div>
@@ -146,8 +146,8 @@ export default function ResultDetailPage() {
                                         />
                                     </svg>
                                     <div className="absolute flex flex-col items-center">
-                                        <span className="text-5xl font-black tracking-tighter text-gray-900">{result.intentScore}</span>
-                                        <span className="text-[10px] uppercase font-black text-gray-400 tracking-widest">Percent Fit</span>
+                                        <span className="text-4xl sm:text-5xl font-black tracking-tighter text-foreground">{result.intentScore}</span>
+                                        <span className="text-[10px] uppercase font-black text-muted-foreground/60 tracking-widest">Percent Fit</span>
                                     </div>
                                 </div>
                             </div>
@@ -160,10 +160,10 @@ export default function ResultDetailPage() {
                                     <ScoreIcon className="w-3.5 h-3.5" />
                                     {result.mismatchType}
                                 </span>
-                                <h3 className="text-2xl font-serif font-bold text-gray-900 leading-tight">
+                                <h3 className="text-2xl font-serif font-bold text-foreground leading-tight">
                                     Synthesis & Diagnostic Summary
                                 </h3>
-                                <p className="text-gray-600 leading-relaxed text-lg font-serif italic text-justify">
+                                <p className="text-foreground/80 leading-relaxed text-lg font-serif italic text-justify">
                                     {result.explanation}
                                 </p>
                             </div>
@@ -175,7 +175,7 @@ export default function ResultDetailPage() {
                                     <h4 className="flex items-center text-[11px] font-black uppercase tracking-widest text-primary/60">
                                         <Target className="w-3.5 h-3.5 mr-2" /> Academic Inquiry
                                     </h4>
-                                    <div className="p-6 rounded-3xl bg-gray-50/50 border border-gray-100 text-gray-800 text-sm leading-relaxed font-serif italic shadow-inner">
+                                    <div className="p-6 rounded-3xl bg-secondary/30 border border-border/50 text-foreground text-sm leading-relaxed font-serif italic shadow-inner">
                                         {result.question}
                                     </div>
                                 </div>
@@ -183,7 +183,7 @@ export default function ResultDetailPage() {
                                     <h4 className="flex items-center text-[11px] font-black uppercase tracking-widest text-primary/60">
                                         <Sparkles className="w-3.5 h-3.5 mr-2" /> Respondent Submission
                                     </h4>
-                                    <div className="p-6 rounded-3xl bg-gray-50/50 border border-gray-100 text-gray-800 text-sm leading-relaxed font-serif shadow-inner">
+                                    <div className="p-6 rounded-3xl bg-secondary/30 border border-border/50 text-foreground text-sm leading-relaxed font-serif shadow-inner">
                                         {result.answer}
                                     </div>
                                 </div>
@@ -194,23 +194,23 @@ export default function ResultDetailPage() {
                                     <h4 className="flex items-center text-[11px] font-black uppercase tracking-widest text-emerald-600/60">
                                         <Lightbulb className="w-3.5 h-3.5 mr-2" /> Pedagogical Correction
                                     </h4>
-                                    <div className="p-8 rounded-[2rem] bg-emerald-50/20 border border-emerald-100/50 relative overflow-hidden group">
+                                    <div className="p-8 rounded-[2rem] bg-emerald-500/5 dark:bg-emerald-500/10 border border-emerald-500/20 relative overflow-hidden group">
                                         <div className="absolute -right-4 -top-4 opacity-5 group-hover:scale-110 transition-transform duration-700">
                                             <Sparkles className="w-24 h-24 text-emerald-600" />
                                         </div>
-                                        <p className="text-xs font-black uppercase tracking-widest text-emerald-600 mb-2">Suggested Reframing</p>
-                                        <p className="text-lg font-serif italic font-medium text-emerald-900 leading-relaxed">
+                                        <p className="text-xs font-black uppercase tracking-widest text-emerald-600 dark:text-emerald-400 mb-2">Suggested Reframing</p>
+                                        <p className="text-lg font-serif italic font-medium text-foreground dark:text-emerald-50 leading-relaxed">
                                             "{result.suggestedReframe}"
                                         </p>
                                     </div>
                                 </div>
 
                                 <div className="space-y-4">
-                                    <h4 className="flex items-center text-[11px] font-black uppercase tracking-widest text-gray-400">
+                                    <h4 className="flex items-center text-[11px] font-black uppercase tracking-widest text-muted-foreground/60">
                                         <Target className="w-3.5 h-3.5 mr-2" /> Required Intent
                                     </h4>
                                     <div className="pl-6 border-l-4 border-primary/20">
-                                        <p className="text-base text-gray-600 font-serif leading-relaxed italic">
+                                        <p className="text-base text-muted-foreground font-serif leading-relaxed italic">
                                             {result.expectedIntent}
                                         </p>
                                     </div>
