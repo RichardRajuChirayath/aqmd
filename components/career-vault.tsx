@@ -228,12 +228,12 @@ export default function CareerVaultUI() {
                                         <motion.div
                                             key={idx}
                                             onClick={() => openLink(result.url)}
-                                            whileHover={{ scale: 1.01 }}
-                                            whileTap={{ scale: 0.98 }}
+                                            whileHover={{ scale: 1.01, backgroundColor: "rgba(255, 255, 255, 0.05)" }}
+                                            whileTap={{ scale: 0.96 }}
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: idx * 0.05 }}
-                                            className="block p-4 rounded-lg bg-card/50 dark:bg-slate-900/50 border border-border dark:border-slate-800 hover:border-cyan-500/50 hover:bg-secondary dark:hover:bg-slate-800/50 transition-all group cursor-pointer shadow-sm relative overflow-hidden"
+                                            className="block p-4 rounded-lg bg-card/50 dark:bg-slate-900/50 border border-border dark:border-slate-800 hover:border-cyan-500/50 transition-all group cursor-pointer shadow-sm relative overflow-hidden"
                                         >
                                             <div className="flex items-start justify-between gap-4">
                                                 <div className="flex-1 min-w-0">
@@ -243,13 +243,7 @@ export default function CareerVaultUI() {
                                                     <p className="text-xs text-muted-foreground line-clamp-2">{result.snippet}</p>
                                                     <p className="text-[10px] text-cyan-600 dark:text-cyan-500 mt-1 truncate">{result.url}</p>
                                                 </div>
-                                                <div
-                                                    className="p-2 rounded-md bg-cyan-500/10 text-cyan-500 group-hover:bg-cyan-500 group-hover:text-white transition-all shadow-sm"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        openLink(result.url);
-                                                    }}
-                                                >
+                                                <div className="p-2 rounded-md bg-cyan-500/10 text-cyan-500 group-hover:bg-cyan-500 group-hover:text-white transition-all shadow-sm">
                                                     <ExternalLink className="w-4 h-4" />
                                                 </div>
                                             </div>

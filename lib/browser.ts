@@ -1,5 +1,4 @@
-// In-app browser utility for Capacitor
-// Opens links inside the app with a close button
+import { toast } from "sonner"
 
 let Browser: any = null
 
@@ -12,8 +11,8 @@ async function getBrowser() {
         const module = await import('@capacitor/browser')
         Browser = module.Browser
         return Browser
-    } catch {
-        // Fallback for web - Browser plugin not available
+    } catch (e) {
+        console.warn("Capacitor Browser plugin not available, using web fallback", e)
         return null
     }
 }
@@ -24,18 +23,34 @@ async function getBrowser() {
  * - Web: Opens in new tab
  */
 export async function openLink(url: string) {
-    const browser = await getBrowser()
+    if (!url) {
+        toast.error("Invalid URL")
+        return
+    }
 
-    if (browser) {
-        // Native app - open in-app browser with close button
-        await browser.open({
-            url,
-            presentationStyle: 'popover', // iOS: shows as popover
-            toolbarColor: '#0f172a', // Match your dark theme
-        })
-    } else {
-        // Web fallback - open in new tab
-        window.open(url, '_blank', 'noopener,noreferrer')
+    toast.info("Opening paper source...")
+
+    try {
+        const browser = await getBrowser()
+
+        if (browser && typeof window !== 'undefined' && (window as any).Capacitor) {
+            // Native app - open in-app browser with close button
+            await browser.open({
+                url,
+                presentationStyle: 'fullscreen', // Fullscreen is more reliable on Android
+                toolbarColor: '#0f172a',
+            })
+        } else {
+            // Web fallback - open in new tab
+            const win = window.open(url, '_blank', 'noopener,noreferrer')
+            if (!win) {
+                toast.error("Browser blocked a popup. Please allow popups.")
+            }
+        }
+    } catch (err) {
+        console.error("Failed to open link:", err)
+        // Final fallback
+        window.location.href = url
     }
 }
 
