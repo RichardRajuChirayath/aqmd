@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
-    "lint": "eslint .",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint",
+    "mobile:sync": "npx capacitor-assets generate --android && npx cap sync android",
+    "prisma:generate": "prisma generate"
   },
   "dependencies": {
     "@capacitor/android": "^8.0.0",
