@@ -1,0 +1,173 @@
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/api/analysis/[id]",
+      "regex": "^/api/analysis/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/analysis/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/pathway/[id]",
+      "regex": "^/api/pathway/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/pathway/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/pathways/[id]",
+      "regex": "^/pathways/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/pathways/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/result/[id]",
+      "regex": "^/result/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/result/(?<nxtPid>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/api/analyze-document",
+      "regex": "^/api/analyze\\-document(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/analyze\\-document(?:/)?$"
+    },
+    {
+      "page": "/api/analyze-intent",
+      "regex": "^/api/analyze\\-intent(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/analyze\\-intent(?:/)?$"
+    },
+    {
+      "page": "/api/analyze-score",
+      "regex": "^/api/analyze\\-score(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/analyze\\-score(?:/)?$"
+    },
+    {
+      "page": "/api/clear-history",
+      "regex": "^/api/clear\\-history(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/clear\\-history(?:/)?$"
+    },
+    {
+      "page": "/api/generate-pathway",
+      "regex": "^/api/generate\\-pathway(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/generate\\-pathway(?:/)?$"
+    },
+    {
+      "page": "/api/history",
+      "regex": "^/api/history(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/history(?:/)?$"
+    },
+    {
+      "page": "/api/leaderboard",
+      "regex": "^/api/leaderboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/leaderboard(?:/)?$"
+    },
+    {
+      "page": "/api/papers/discover",
+      "regex": "^/api/papers/discover(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/papers/discover(?:/)?$"
+    },
+    {
+      "page": "/api/search",
+      "regex": "^/api/search(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/search(?:/)?$"
+    },
+    {
+      "page": "/history",
+      "regex": "^/history(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/history(?:/)?$"
+    },
+    {
+      "page": "/papers",
+      "regex": "^/papers(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/papers(?:/)?$"
+    },
+    {
+      "page": "/pathways",
+      "regex": "^/pathways(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/pathways(?:/)?$"
+    },
+    {
+      "page": "/result",
+      "regex": "^/result(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/result(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

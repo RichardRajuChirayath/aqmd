@@ -47,7 +47,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <div className="flex min-h-screen lg:flex-row flex-col">
             <DashboardNav />
-            <main className="flex-1 lg:ml-64 pb-20 lg:pb-0">
+            <main className="flex-1 lg:ml-64 pb-24 lg:pb-0">
               {/* Mobile Only Header */}
               <div className="lg:hidden flex items-center justify-between px-6 h-16 border-b border-border/50 bg-background/50 backdrop-blur-xl sticky top-0 z-40">
                 <div className="flex items-center gap-2">

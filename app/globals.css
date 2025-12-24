@@ -185,3 +185,16 @@
     background-size: 40px 40px;
   }
 }
+
+/* Mobile Safe Areas */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+
+.h-safe-nav {
+  height: calc(4rem + env(safe-area-inset-bottom));
+}

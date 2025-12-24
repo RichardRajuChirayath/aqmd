@@ -2,8 +2,9 @@
     "appId": "com.aqmd.app",
     "appName": "AQMD",
     "webDir": "public",
+    "bundledWebRuntime": false,
     "server": {
         "url": "https://www.aqmd.site",
-        "cleartext": false
+        "cleartext": true
     }
 }

@@ -68,12 +68,12 @@ export function DashboardNav() {
             </aside>
 
             {/* Mobile Bottom Nav */}
-            <nav className="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-t border-border/50 z-50 flex items-center justify-around px-2">
+            <nav className="lg:hidden fixed bottom-0 left-0 right-0 h-safe-nav bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-t border-border/50 z-50 flex items-start justify-around px-4 pb-safe pt-2">
                 {navItems.map((item) => {
                     const Icon = item.icon
                     const isActive = pathname === item.href
                     return (
-                        <Link key={item.name} href={item.href} className="flex-1 h-full">
+                        <Link key={item.name} href={item.href} className="flex-1 h-12">
                             <div className={`flex flex-col items-center justify-center h-full gap-1 transition-colors ${isActive ? "text-blue-600 dark:text-blue-400" : "text-muted-foreground"
                                 }`}>
                                 <Icon className="w-5 h-5" />
@@ -82,7 +82,7 @@ export function DashboardNav() {
                         </Link>
                     )
                 })}
-                <div className="flex-1 flex justify-center">
+                <div className="flex-1 flex justify-center h-12 items-center">
                     <ThemeToggle />
                 </div>
             </nav>
