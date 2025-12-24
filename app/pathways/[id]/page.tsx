@@ -128,9 +128,9 @@ export default function PathwayResultPage() {
 
                 {/* Easy Learning Tips */}
                 {pathway.easyLearningTips && pathway.easyLearningTips.length > 0 && (
-                    <Card className="glass-card mb-8 border-emerald-200/50 bg-gradient-to-br from-emerald-50/50 to-green-50/50">
+                    <Card className="glass-card mb-8 border-emerald-500/30 bg-emerald-500/10 dark:bg-emerald-500/5">
                         <CardHeader>
-                            <CardTitle className="text-xl font-serif flex items-center gap-3 text-emerald-700">
+                            <CardTitle className="text-xl font-serif flex items-center gap-3 text-emerald-600 dark:text-emerald-400">
                                 <span className="text-2xl">💡</span>
                                 Easy Ways to Learn This
                             </CardTitle>
@@ -138,11 +138,11 @@ export default function PathwayResultPage() {
                         <CardContent>
                             <ul className="space-y-3">
                                 {pathway.easyLearningTips.map((tip, i) => (
-                                    <li key={i} className="flex gap-3 items-start p-3 rounded-xl bg-white/60 border border-emerald-100">
-                                        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm font-bold">
+                                    <li key={i} className="flex gap-3 items-start p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                                        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm font-bold">
                                             {i + 1}
                                         </span>
-                                        <p className="text-sm leading-relaxed text-gray-700">{tip}</p>
+                                        <p className="text-sm leading-relaxed text-foreground/80">{tip}</p>
                                     </li>
                                 ))}
                             </ul>
@@ -205,9 +205,9 @@ export default function PathwayResultPage() {
                             <div className="grid sm:grid-cols-2 gap-4">
                                 {pathway.crossSubjectLinks.length > 0 ? (
                                     pathway.crossSubjectLinks.map((link, i) => (
-                                        <div key={i} className="p-3 rounded-lg bg-blue-50/50 border border-blue-100">
-                                            <p className="text-xs font-bold text-blue-600 uppercase mb-1">{link.subject}</p>
-                                            <p className="text-sm text-gray-700">{link.connection}</p>
+                                        <div key={i} className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                                            <p className="text-xs font-bold text-blue-500 dark:text-blue-400 uppercase mb-1">{link.subject}</p>
+                                            <p className="text-sm text-foreground/80">{link.connection}</p>
                                         </div>
                                     ))
                                 ) : (
@@ -229,14 +229,14 @@ export default function PathwayResultPage() {
                             <div className="space-y-4">
                                 {pathway.commonMistakes.length > 0 ? (
                                     pathway.commonMistakes.map((item, i) => (
-                                        <div key={i} className="grid sm:grid-cols-2 gap-4 p-3 rounded-lg border border-red-100 bg-red-50/30">
+                                        <div key={i} className="grid sm:grid-cols-2 gap-4 p-3 rounded-lg border border-red-500/20 bg-red-500/10">
                                             <div>
-                                                <p className="text-xs font-bold text-red-500 uppercase mb-1">Mistake</p>
-                                                <p className="text-sm">{item.mistake}</p>
+                                                <p className="text-xs font-bold text-red-500 dark:text-red-400 uppercase mb-1">Mistake</p>
+                                                <p className="text-sm text-foreground/80">{item.mistake}</p>
                                             </div>
                                             <div>
-                                                <p className="text-xs font-bold text-emerald-600 uppercase mb-1">Correction</p>
-                                                <p className="text-sm">{item.correction}</p>
+                                                <p className="text-xs font-bold text-emerald-500 dark:text-emerald-400 uppercase mb-1">Correction</p>
+                                                <p className="text-sm text-foreground/80">{item.correction}</p>
                                             </div>
                                         </div>
                                     ))
@@ -256,7 +256,7 @@ export default function PathwayResultPage() {
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-sm leading-relaxed text-gray-700">{pathway.examRelevance}</p>
+                            <p className="text-sm leading-relaxed text-foreground/80">{pathway.examRelevance}</p>
                         </CardContent>
                     </Card>
 
@@ -293,13 +293,13 @@ export default function PathwayResultPage() {
                             <ol className="space-y-3">
                                 {pathway.learningOrder.length > 0 ? (
                                     pathway.learningOrder.map((step) => (
-                                        <li key={step.step} className="flex gap-4 items-start p-3 rounded-lg bg-indigo-50/30 border border-indigo-100">
+                                        <li key={step.step} className="flex gap-4 items-start p-3 rounded-lg bg-indigo-500/10 border border-indigo-500/20">
                                             <span className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold text-sm">
                                                 {step.step}
                                             </span>
                                             <div>
-                                                <p className="font-medium text-gray-900">{step.topic}</p>
-                                                <p className="text-sm text-gray-600">{step.description}</p>
+                                                <p className="font-medium text-foreground">{step.topic}</p>
+                                                <p className="text-sm text-foreground/70">{step.description}</p>
                                             </div>
                                         </li>
                                     ))
@@ -311,7 +311,7 @@ export default function PathwayResultPage() {
                     </Card>
 
                     {/* Mastery Rule */}
-                    <Card className="glass-card md:col-span-2 bg-gradient-to-br from-amber-50/50 to-yellow-50/50 border-amber-200">
+                    <Card className="glass-card md:col-span-2 bg-amber-500/10 border-amber-500/30">
                         <CardHeader className="pb-3">
                             <CardTitle className="text-lg font-serif flex items-center gap-2">
                                 <Trophy className="w-5 h-5 text-amber-500" />
@@ -319,8 +319,8 @@ export default function PathwayResultPage() {
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-base font-medium text-gray-800 italic">"{pathway.masteryRule}"</p>
-                            <p className="text-xs text-amber-700 mt-2">If you can do this, you've truly mastered {pathway.topic}.</p>
+                            <p className="text-base font-medium text-foreground italic">"{pathway.masteryRule}"</p>
+                            <p className="text-xs text-amber-600 dark:text-amber-400 mt-2">If you can do this, you've truly mastered {pathway.topic}.</p>
                         </CardContent>
                     </Card>
                 </div>
