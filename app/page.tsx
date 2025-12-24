@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Search, Zap, GraduationCap, History, Cpu, ArrowRight, FileText, BarChart3 } from "lucide-react"
 import { motion } from "framer-motion"
@@ -12,8 +12,28 @@ export default function HomePage() {
   const [question, setQuestion] = useState("")
   const [answer, setAnswer] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [stats, setStats] = useState({ analysisCount: 0, averageScore: 0 })
   const router = useRouter()
   const guestId = useGuestId()
+
+  useEffect(() => {
+    async function fetchStats() {
+      if (!guestId) return
+      try {
+        const res = await fetch(apiUrl(`/api/user-stats?guestId=${encodeURIComponent(guestId)}`))
+        if (res.ok) {
+          const data = await res.json()
+          setStats({
+            analysisCount: data.analysisCount,
+            averageScore: data.averageScore
+          })
+        }
+      } catch (err) {
+        console.error("Failed to fetch homepage stats:", err)
+      }
+    }
+    fetchStats()
+  }, [guestId])
 
   const handleAnalyze = async () => {
     if (!question.trim() || !answer.trim()) return
@@ -41,6 +61,10 @@ export default function HomePage() {
       </main>
     )
   }
+
+  const analysisGoal = 5
+  const remainingAnalyses = Math.max(0, analysisGoal - stats.analysisCount)
+  const progressPercentage = Math.min(100, (stats.analysisCount / analysisGoal) * 100)
 
   return (
     <main className="min-h-screen bg-background dark:bg-slate-950 text-foreground selection:bg-blue-500/30">
@@ -102,13 +126,21 @@ export default function HomePage() {
                 <BarChart3 className="w-8 h-8 sm:w-12 sm:h-12 text-blue-600 dark:text-blue-400" />
               </div>
               <h3 className="text-xl sm:text-2xl font-bold mb-4 tech-heading">Predictive Score Tracking</h3>
-              <p className="text-muted-foreground text-sm mb-6">Analyze 3 more papers to unlock your {new Date().getFullYear()} Exam Readiness Score.</p>
+              <p className="text-muted-foreground text-sm mb-6">
+                {remainingAnalyses > 0
+                  ? `Analyze ${remainingAnalyses} more paper${remainingAnalyses === 1 ? '' : 's'} to unlock your ${new Date().getFullYear()} Exam Readiness Score.`
+                  : `Mastery Unlocked! Your ${new Date().getFullYear()} Exam Readiness Score is ready.`}
+              </p>
               <div className="w-full space-y-3">
                 <div className="h-2 w-full bg-secondary dark:bg-slate-800 rounded-full overflow-hidden">
-                  <div className="h-full w-2/3 bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${progressPercentage}%` }}
+                    className="h-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+                  />
                 </div>
                 <div className="flex justify-between text-[10px] font-mono text-muted-foreground">
-                  <span>MASTERY: 67%</span>
+                  <span>MASTERY: {stats.averageScore}%</span>
                   <span>GOAL: 95%</span>
                 </div>
               </div>
