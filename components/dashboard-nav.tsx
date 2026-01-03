@@ -11,7 +11,8 @@ import {
     Zap,
     LayoutDashboard,
     BrainCircuit,
-    GraduationCap
+    GraduationCap,
+    BookOpen
 } from "lucide-react"
 import { motion } from "framer-motion"
 import { ThemeToggle } from "./theme-toggle"
@@ -20,6 +21,7 @@ import { GuestBadge } from "./guest-badge"
 const navItems = [
     { name: "Home", href: "/", icon: Home },
     { name: "Vault", href: "/papers", icon: GraduationCap },
+    { name: "Study", href: "/study", icon: BookOpen },
     { name: "History", href: "/history", icon: History },
 ]
 

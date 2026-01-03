@@ -1,9 +1,11 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/api/study/help/route": "app/api/study/help/route.js",
-  "/api/study/page/route": "app/api/study/page/route.js",
-  "/api/study/parse/route": "app/api/study/parse/route.js",
+  "/api/history/route": "app/api/history/route.js",
   "/api/study/session/route": "app/api/study/session/route.js",
+  "/api/user-stats/route": "app/api/user-stats/route.js",
+  "/history/page": "app/history/page.js",
+  "/page": "app/page.js",
+  "/papers/page": "app/papers/page.js",
   "/study/[sessionId]/page": "app/study/[sessionId]/page.js",
   "/study/page": "app/study/page.js"
 }

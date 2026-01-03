@@ -1,8 +1,8 @@
-[00:00:00.952] Server  LOG      ✓ Ready in 610ms
-[00:00:13.039] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:13.074] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:25.194] Browser WARN    You are trying to animate width from "Infinity%" to "100%". "Infinity%" is not an animatable value.. For more information and steps for solving, visit https://motion.dev/troubleshooting/value-not-animatable
-[00:00:25.194] Browser WARN    Warning: Cannot load system font: ZapfDingbats, installing it could help to improve PDF rendering.
-[00:00:34.537] Server  ERROR   (node:2804) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
-(Use `node --trace-deprecation ...` to show where the warning was created)
-[00:05:30.826] Server  LOG      ✓ Compiled in 167ms
+[00:00:02.520] Server  LOG      ✓ Ready in 1733ms
+[00:00:05.713] Server  LOG      ○ Compiling /study ...
+[00:00:11.063] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:11.456] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:23.295] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:16.915] Server  LOG      ✓ Compiled in 399ms
+[00:01:17.971] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:18.007] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
