@@ -49,11 +49,21 @@ export default function StudyPage() {
             return
         }
 
+        // Check file size (max 20MB)
+        const maxSize = 20 * 1024 * 1024 // 20MB in bytes
+        if (file.size > maxSize) {
+            alert("File too large. Maximum size is 20MB.")
+            return
+        }
+
+        console.log("[Study] Starting upload for:", file.name, "Size:", file.size)
         setIsUploading(true)
-        try {
-            // Convert PDF to data URL for storage
-            const reader = new FileReader()
-            reader.onload = async (e) => {
+
+        // Convert PDF to data URL for storage
+        const reader = new FileReader()
+
+        reader.onload = async (e) => {
+            try {
                 const pdfUrl = e.target?.result as string
 
                 // Create session via API
@@ -68,6 +78,7 @@ export default function StudyPage() {
                 })
 
                 const data = await res.json()
+
                 if (data.session) {
                     // Store session in localStorage for the session page to access
                     localStorage.setItem(`study_session_${data.session.id}`, JSON.stringify({
@@ -75,13 +86,25 @@ export default function StudyPage() {
                         pdfUrl
                     }))
                     router.push(`/study/${data.session.id}`)
+                } else {
+                    console.error("No session returned:", data)
+                    alert("Failed to create session. Please try again.")
+                    setIsUploading(false)
                 }
+            } catch (error) {
+                console.error("Upload failed:", error)
+                alert("Upload failed. Please try again.")
+                setIsUploading(false)
             }
-            reader.readAsDataURL(file)
-        } catch (error) {
-            console.error("Upload failed:", error)
+        }
+
+        reader.onerror = () => {
+            console.error("Failed to read file")
+            alert("Failed to read file. Please try again.")
             setIsUploading(false)
         }
+
+        reader.readAsDataURL(file)
     }
 
     const handleDrop = (e: React.DragEvent) => {
