@@ -32,14 +32,13 @@ function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRendered }) {
     const [pageNumber, setPageNumber] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(1);
     const [scale, setScale] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(1.0);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
-    const pageRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const containerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     function onDocumentLoadSuccess({ numPages }) {
         setNumPages(numPages);
         setLoading(false);
         onPageChange(1, numPages);
     }
     function onPageLoadSuccess() {
-        // Get the canvas after page renders
         setTimeout(()=>{
             const canvas = document.querySelector(".react-pdf__Page__canvas");
             if (canvas) {
@@ -93,11 +92,22 @@ function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRendered }) {
         goToPrevPage,
         goToNextPage
     ]);
+    // Click to navigate - left half = prev, right half = next
+    const handlePdfClick = (e)=>{
+        const rect = e.currentTarget.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const halfWidth = rect.width / 2;
+        if (clickX < halfWidth) {
+            goToPrevPage();
+        } else {
+            goToNextPage();
+        }
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "flex flex-col h-full bg-slate-950",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex items-center justify-between px-4 py-3 bg-slate-900/80 backdrop-blur border-b border-slate-800",
+                className: "sticky top-0 z-20 flex items-center justify-between px-4 py-3 bg-slate-900 border-b border-slate-800",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "flex items-center gap-2",
@@ -105,52 +115,51 @@ function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRendered }) {
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 onClick: goToPrevPage,
                                 disabled: pageNumber <= 1,
-                                className: "p-2 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors",
+                                className: "p-3 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-white",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronLeft$3e$__["ChevronLeft"], {
-                                    className: "w-5 h-5"
+                                    className: "w-6 h-6"
                                 }, void 0, false, {
                                     fileName: "[project]/components/pdf-reader.tsx",
-                                    lineNumber: 80,
+                                    lineNumber: 92,
                                     columnNumber: 25
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/pdf-reader.tsx",
-                                lineNumber: 75,
+                                lineNumber: 87,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: "text-sm font-mono text-slate-300 min-w-[100px] text-center",
+                                className: "text-lg font-bold text-white min-w-[120px] text-center",
                                 children: [
-                                    "Page ",
                                     pageNumber,
-                                    " of ",
+                                    " / ",
                                     numPages
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/pdf-reader.tsx",
-                                lineNumber: 82,
+                                lineNumber: 94,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 onClick: goToNextPage,
                                 disabled: pageNumber >= numPages,
-                                className: "p-2 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors",
+                                className: "p-3 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-white",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
-                                    className: "w-5 h-5"
+                                    className: "w-6 h-6"
                                 }, void 0, false, {
                                     fileName: "[project]/components/pdf-reader.tsx",
-                                    lineNumber: 90,
+                                    lineNumber: 102,
                                     columnNumber: 25
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/pdf-reader.tsx",
-                                lineNumber: 85,
+                                lineNumber: 97,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/pdf-reader.tsx",
-                        lineNumber: 74,
+                        lineNumber: 86,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -163,12 +172,12 @@ function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRendered }) {
                                     className: "w-5 h-5"
                                 }, void 0, false, {
                                     fileName: "[project]/components/pdf-reader.tsx",
-                                    lineNumber: 99,
+                                    lineNumber: 111,
                                     columnNumber: 25
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/pdf-reader.tsx",
-                                lineNumber: 95,
+                                lineNumber: 107,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -179,7 +188,7 @@ function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRendered }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/pdf-reader.tsx",
-                                lineNumber: 101,
+                                lineNumber: 113,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -189,27 +198,36 @@ function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRendered }) {
                                     className: "w-5 h-5"
                                 }, void 0, false, {
                                     fileName: "[project]/components/pdf-reader.tsx",
-                                    lineNumber: 108,
+                                    lineNumber: 120,
                                     columnNumber: 25
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/pdf-reader.tsx",
-                                lineNumber: 104,
+                                lineNumber: 116,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/pdf-reader.tsx",
-                        lineNumber: 94,
+                        lineNumber: 106,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/pdf-reader.tsx",
-                lineNumber: 73,
+                lineNumber: 85,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "text-center py-1 bg-slate-900/50 text-xs text-slate-500",
+                children: "Tap left/right side of PDF to navigate • Use arrow keys"
+            }, void 0, false, {
+                fileName: "[project]/components/pdf-reader.tsx",
+                lineNumber: 126,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                ref: containerRef,
                 className: "flex-1 overflow-auto flex items-start justify-center p-4 bg-slate-950",
                 children: [
                     loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -218,12 +236,12 @@ function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRendered }) {
                             className: "w-8 h-8 animate-spin text-blue-500"
                         }, void 0, false, {
                             fileName: "[project]/components/pdf-reader.tsx",
-                            lineNumber: 117,
+                            lineNumber: 137,
                             columnNumber: 25
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/pdf-reader.tsx",
-                        lineNumber: 116,
+                        lineNumber: 136,
                         columnNumber: 21
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -235,7 +253,8 @@ function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRendered }) {
                             opacity: 1,
                             y: 0
                         },
-                        className: "shadow-2xl rounded-lg overflow-hidden",
+                        className: "shadow-2xl rounded-lg overflow-hidden cursor-pointer",
+                        onClick: handlePdfClick,
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$pdf$2f$dist$2f$Document$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Document$3e$__["Document"], {
                             file: pdfUrl,
                             onLoadSuccess: onDocumentLoadSuccess,
@@ -245,12 +264,12 @@ function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRendered }) {
                                     className: "w-8 h-8 animate-spin text-blue-500"
                                 }, void 0, false, {
                                     fileName: "[project]/components/pdf-reader.tsx",
-                                    lineNumber: 130,
+                                    lineNumber: 151,
                                     columnNumber: 33
                                 }, void 0)
                             }, void 0, false, {
                                 fileName: "[project]/components/pdf-reader.tsx",
-                                lineNumber: 129,
+                                lineNumber: 150,
                                 columnNumber: 29
                             }, void 0),
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$pdf$2f$dist$2f$Page$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Page$3e$__["Page"], {
@@ -262,33 +281,33 @@ function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRendered }) {
                                 className: "pdf-page"
                             }, void 0, false, {
                                 fileName: "[project]/components/pdf-reader.tsx",
-                                lineNumber: 134,
+                                lineNumber: 155,
                                 columnNumber: 25
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/pdf-reader.tsx",
-                            lineNumber: 125,
+                            lineNumber: 146,
                             columnNumber: 21
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/pdf-reader.tsx",
-                        lineNumber: 120,
+                        lineNumber: 140,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/pdf-reader.tsx",
-                lineNumber: 114,
+                lineNumber: 131,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/pdf-reader.tsx",
-        lineNumber: 71,
+        lineNumber: 83,
         columnNumber: 9
     }, this);
 }
-_s(PDFReader, "bIbKyoxpjUB7oIeU+8CKIF9Fnbw=");
+_s(PDFReader, "j9qMsLe89RBNr07O5yZJ2dnV3LM=");
 _c = PDFReader;
 var _c;
 __turbopack_context__.k.register(_c, "PDFReader");

@@ -20,7 +20,7 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
     const [pageNumber, setPageNumber] = useState<number>(1)
     const [scale, setScale] = useState<number>(1.0)
     const [loading, setLoading] = useState<boolean>(true)
-    const pageRef = useRef<HTMLCanvasElement | null>(null)
+    const containerRef = useRef<HTMLDivElement>(null)
 
     function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
         setNumPages(numPages)
@@ -29,7 +29,6 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
     }
 
     function onPageLoadSuccess() {
-        // Get the canvas after page renders
         setTimeout(() => {
             const canvas = document.querySelector(".react-pdf__Page__canvas") as HTMLCanvasElement
             if (canvas) {
@@ -67,27 +66,40 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
         return () => window.removeEventListener("keydown", handleKeyDown)
     }, [goToPrevPage, goToNextPage])
 
+    // Click to navigate - left half = prev, right half = next
+    const handlePdfClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        const rect = e.currentTarget.getBoundingClientRect()
+        const clickX = e.clientX - rect.left
+        const halfWidth = rect.width / 2
+
+        if (clickX < halfWidth) {
+            goToPrevPage()
+        } else {
+            goToNextPage()
+        }
+    }
+
     return (
         <div className="flex flex-col h-full bg-slate-950">
-            {/* Controls Bar */}
-            <div className="flex items-center justify-between px-4 py-3 bg-slate-900/80 backdrop-blur border-b border-slate-800">
+            {/* Controls Bar - STICKY at top */}
+            <div className="sticky top-0 z-20 flex items-center justify-between px-4 py-3 bg-slate-900 border-b border-slate-800">
                 <div className="flex items-center gap-2">
                     <button
                         onClick={goToPrevPage}
                         disabled={pageNumber <= 1}
-                        className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        className="p-3 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-white"
                     >
-                        <ChevronLeft className="w-5 h-5" />
+                        <ChevronLeft className="w-6 h-6" />
                     </button>
-                    <span className="text-sm font-mono text-slate-300 min-w-[100px] text-center">
-                        Page {pageNumber} of {numPages}
+                    <span className="text-lg font-bold text-white min-w-[120px] text-center">
+                        {pageNumber} / {numPages}
                     </span>
                     <button
                         onClick={goToNextPage}
                         disabled={pageNumber >= numPages}
-                        className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        className="p-3 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-white"
                     >
-                        <ChevronRight className="w-5 h-5" />
+                        <ChevronRight className="w-6 h-6" />
                     </button>
                 </div>
 
@@ -110,8 +122,16 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
                 </div>
             </div>
 
+            {/* Tap hint */}
+            <div className="text-center py-1 bg-slate-900/50 text-xs text-slate-500">
+                Tap left/right side of PDF to navigate • Use arrow keys
+            </div>
+
             {/* PDF Viewer */}
-            <div className="flex-1 overflow-auto flex items-start justify-center p-4 bg-slate-950">
+            <div
+                ref={containerRef}
+                className="flex-1 overflow-auto flex items-start justify-center p-4 bg-slate-950"
+            >
                 {loading && (
                     <div className="flex items-center justify-center h-full">
                         <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
@@ -120,7 +140,8 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="shadow-2xl rounded-lg overflow-hidden"
+                    className="shadow-2xl rounded-lg overflow-hidden cursor-pointer"
+                    onClick={handlePdfClick}
                 >
                     <Document
                         file={pdfUrl}
@@ -145,3 +166,4 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
         </div>
     )
 }
+
