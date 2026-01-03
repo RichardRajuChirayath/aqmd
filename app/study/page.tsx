@@ -59,36 +59,38 @@ export default function StudyPage() {
         console.log("[Study] Starting upload for:", file.name, "Size:", file.size)
         setIsUploading(true)
 
-        // Convert PDF to data URL for storage
+        // Convert PDF to data URL for LOCAL storage only (not sent to server - too large)
         const reader = new FileReader()
 
         reader.onload = async (e) => {
             try {
                 const pdfUrl = e.target?.result as string
+                console.log("[Study] PDF loaded, size:", pdfUrl.length, "chars")
 
-                // Create session via API
+                // Create session via API - DO NOT send pdfUrl (too large for DB)
                 const res = await fetch(apiUrl("/api/study/session"), {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         guestId,
-                        pdfName: file.name,
-                        pdfUrl
+                        pdfName: file.name
+                        // pdfUrl NOT sent to server - stored locally only
                     })
                 })
 
                 const data = await res.json()
+                console.log("[Study] Session response:", data)
 
                 if (data.session) {
-                    // Store session in localStorage for the session page to access
+                    // Store PDF in localStorage (client-side only)
                     localStorage.setItem(`study_session_${data.session.id}`, JSON.stringify({
                         ...data.session,
-                        pdfUrl
+                        pdfUrl // PDF stays in browser only
                     }))
                     router.push(`/study/${data.session.id}`)
                 } else {
                     console.error("No session returned:", data)
-                    alert("Failed to create session. Please try again.")
+                    alert("Failed to create session: " + (data.error || "Unknown error"))
                     setIsUploading(false)
                 }
             } catch (error) {
