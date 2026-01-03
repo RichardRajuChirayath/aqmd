@@ -221,9 +221,6 @@ function Input({ className, type, ...props }) {
 "use strict";
 
 // Centralized API base URL handling
-// - Local dev      → relative paths
-// - Web (prod)     → https://www.aqmd.site
-// - Capacitor APK  → https://www.aqmd.site
 __turbopack_context__.s([
     "API_BASE_URL",
     ()=>API_BASE_URL,
@@ -232,9 +229,12 @@ __turbopack_context__.s([
 ]);
 const isBrowser = ("TURBOPACK compile-time value", "undefined") !== 'undefined';
 const isLocalhost = isBrowser && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-const API_BASE_URL = ("TURBOPACK compile-time falsy", 0) ? "TURBOPACK unreachable" : 'https://www.aqmd.site';
+const API_BASE_URL = ("TURBOPACK compile-time falsy", 0) ? "TURBOPACK unreachable" : '';
 function apiUrl(path) {
-    return `${API_BASE_URL}${path}`;
+    if (path.startsWith('http')) return path;
+    const cleanPath = path.startsWith('/') ? path : `/${path}`;
+    // If we have a base URL (APK/Dev), use it. Otherwise relative.
+    return ("TURBOPACK compile-time falsy", 0) ? "TURBOPACK unreachable" : cleanPath;
 }
 }),
 "[project]/components/guest-badge.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
@@ -566,14 +566,14 @@ function DashboardNav() {
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
-                className: "lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-t border-border/50 z-50 flex items-center justify-around px-2",
+                className: "lg:hidden fixed bottom-0 left-0 right-0 h-safe-nav bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-t border-border/50 z-50 flex items-start justify-around px-4 pb-safe pt-2",
                 children: [
                     navItems.map((item)=>{
                         const Icon = item.icon;
                         const isActive = pathname === item.href;
                         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                             href: item.href,
-                            className: "flex-1 h-full",
+                            className: "flex-1 h-12",
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: `flex flex-col items-center justify-center h-full gap-1 transition-colors ${isActive ? "text-blue-600 dark:text-blue-400" : "text-muted-foreground"}`,
                                 children: [
@@ -605,7 +605,7 @@ function DashboardNav() {
                         }, this);
                     }),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex-1 flex justify-center",
+                        className: "flex-1 flex justify-center h-12 items-center",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$theme$2d$toggle$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ThemeToggle"], {}, void 0, false, {
                             fileName: "[project]/components/dashboard-nav.tsx",
                             lineNumber: 86,

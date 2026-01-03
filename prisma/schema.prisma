@@ -46,3 +46,38 @@ model Pathway {
   @@index([guestId])
   @@map("pathways")
 }
+
+// Smart PDF Study Companion Models
+model StudySession {
+  id          String       @id @default(uuid())
+  guestId     String       @default("")
+  pdfName     String
+  pdfUrl      String       @db.Text
+  totalPages  Int?
+  currentPage Int          @default(1)
+  status      String       @default("active")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  pages       StudyPage[]
+
+  @@index([guestId])
+  @@map("study_sessions")
+}
+
+model StudyPage {
+  id             String        @id @default(uuid())
+  sessionId      String
+  session        StudySession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  pageNumber     Int
+  extractedText  String        @db.Text
+  summary        String?       @db.Text
+  reflectionQs   Json?
+  studyTip       String?
+  isUnderstood   Boolean?
+  helpRequested  Boolean       @default(false)
+  aiExplanation  String?       @db.Text
+  completedAt    DateTime?
+
+  @@unique([sessionId, pageNumber])
+  @@map("study_pages")
+}

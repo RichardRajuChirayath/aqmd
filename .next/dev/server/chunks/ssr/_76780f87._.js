@@ -2,14 +2,14 @@ module.exports = [
 "[project]/lib/browser.ts [app-ssr] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
-// In-app browser utility for Capacitor
-// Opens links inside the app with a close button
 __turbopack_context__.s([
     "isNativeApp",
     ()=>isNativeApp,
     "openLink",
     ()=>openLink
 ]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/sonner/dist/index.mjs [app-ssr] (ecmascript)");
+;
 let Browser = null;
 // Dynamically import Capacitor Browser (only available in native app)
 async function getBrowser() {
@@ -19,23 +19,32 @@ async function getBrowser() {
         const module = await __turbopack_context__.A("[project]/node_modules/@capacitor/browser/dist/esm/index.js [app-ssr] (ecmascript, async loader)");
         Browser = module.Browser;
         return Browser;
-    } catch  {
-        // Fallback for web - Browser plugin not available
+    } catch (e) {
+        console.warn("Capacitor Browser plugin not available, using web fallback", e);
         return null;
     }
 }
 async function openLink(url) {
-    const browser = await getBrowser();
-    if (browser) {
-        // Native app - open in-app browser with close button
-        await browser.open({
-            url,
-            presentationStyle: 'popover',
-            toolbarColor: '#0f172a'
-        });
-    } else {
-        // Web fallback - open in new tab
-        window.open(url, '_blank', 'noopener,noreferrer');
+    if (!url) {
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].error("Invalid URL");
+        return;
+    }
+    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].info("Opening paper source...");
+    try {
+        const browser = await getBrowser();
+        if ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
+        ;
+        else {
+            // Web fallback - open in new tab
+            const win = window.open(url, '_blank', 'noopener,noreferrer');
+            if (!win) {
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].error("Browser blocked a popup. Please allow popups.");
+            }
+        }
+    } catch (err) {
+        console.error("Failed to open link:", err);
+        // Final fallback
+        window.location.href = url;
     }
 }
 async function isNativeApp() {
@@ -437,6 +446,13 @@ function CareerVaultUI() {
                                     className: "space-y-3",
                                     children: liveResults.map((result, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
                                             onClick: ()=>(0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$browser$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["openLink"])(result.url),
+                                            whileHover: {
+                                                scale: 1.01,
+                                                backgroundColor: "rgba(255, 255, 255, 0.05)"
+                                            },
+                                            whileTap: {
+                                                scale: 0.96
+                                            },
                                             initial: {
                                                 opacity: 0,
                                                 y: 10
@@ -448,7 +464,7 @@ function CareerVaultUI() {
                                             transition: {
                                                 delay: idx * 0.05
                                             },
-                                            className: "block p-4 rounded-lg bg-card/50 dark:bg-slate-900/50 border border-border dark:border-slate-800 hover:border-cyan-500/50 hover:bg-secondary dark:hover:bg-slate-800/50 transition-all group cursor-pointer shadow-sm",
+                                            className: "block p-4 rounded-lg bg-card/50 dark:bg-slate-900/50 border border-border dark:border-slate-800 hover:border-cyan-500/50 transition-all group cursor-pointer shadow-sm relative overflow-hidden",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "flex items-start justify-between gap-4",
                                                 children: [
@@ -460,7 +476,7 @@ function CareerVaultUI() {
                                                                 children: result.title
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/career-vault.tsx",
-                                                                lineNumber: 238,
+                                                                lineNumber: 240,
                                                                 columnNumber: 53
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -468,7 +484,7 @@ function CareerVaultUI() {
                                                                 children: result.snippet
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/career-vault.tsx",
-                                                                lineNumber: 241,
+                                                                lineNumber: 243,
                                                                 columnNumber: 53
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -476,26 +492,33 @@ function CareerVaultUI() {
                                                                 children: result.url
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/career-vault.tsx",
-                                                                lineNumber: 242,
+                                                                lineNumber: 244,
                                                                 columnNumber: 53
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/career-vault.tsx",
-                                                        lineNumber: 237,
+                                                        lineNumber: 239,
                                                         columnNumber: 49
                                                     }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$external$2d$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ExternalLink$3e$__["ExternalLink"], {
-                                                        className: "w-4 h-4 text-muted-foreground group-hover:text-cyan-500 flex-shrink-0 transition-colors"
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "p-2 rounded-md bg-cyan-500/10 text-cyan-500 group-hover:bg-cyan-500 group-hover:text-white transition-all shadow-sm",
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$external$2d$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ExternalLink$3e$__["ExternalLink"], {
+                                                            className: "w-4 h-4"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/components/career-vault.tsx",
+                                                            lineNumber: 247,
+                                                            columnNumber: 53
+                                                        }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/career-vault.tsx",
-                                                        lineNumber: 244,
+                                                        lineNumber: 246,
                                                         columnNumber: 49
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/career-vault.tsx",
-                                                lineNumber: 236,
+                                                lineNumber: 238,
                                                 columnNumber: 45
                                             }, this)
                                         }, idx, false, {
@@ -513,7 +536,7 @@ function CareerVaultUI() {
                                         children: "Fetching papers from the web..."
                                     }, void 0, false, {
                                         fileName: "[project]/components/career-vault.tsx",
-                                        lineNumber: 252,
+                                        lineNumber: 256,
                                         columnNumber: 41
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         children: [
@@ -522,7 +545,7 @@ function CareerVaultUI() {
                                                 children: "No results yet. Click below to search externally:"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/career-vault.tsx",
-                                                lineNumber: 255,
+                                                lineNumber: 259,
                                                 columnNumber: 45
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -533,25 +556,25 @@ function CareerVaultUI() {
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/career-vault.tsx",
-                                                        lineNumber: 260,
+                                                        lineNumber: 264,
                                                         columnNumber: 49
                                                     }, this),
                                                     "Search on Google"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/career-vault.tsx",
-                                                lineNumber: 256,
+                                                lineNumber: 260,
                                                 columnNumber: 45
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/career-vault.tsx",
-                                        lineNumber: 254,
+                                        lineNumber: 258,
                                         columnNumber: 41
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/career-vault.tsx",
-                                    lineNumber: 250,
+                                    lineNumber: 254,
                                     columnNumber: 33
                                 }, this)
                             ]
@@ -572,12 +595,12 @@ function CareerVaultUI() {
                                                 className: "w-6 h-6 text-purple-400"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/career-vault.tsx",
-                                                lineNumber: 274,
+                                                lineNumber: 278,
                                                 columnNumber: 41
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/career-vault.tsx",
-                                            lineNumber: 273,
+                                            lineNumber: 277,
                                             columnNumber: 37
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -587,7 +610,7 @@ function CareerVaultUI() {
                                                     children: "Question Evolution Timeline"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 277,
+                                                    lineNumber: 281,
                                                     columnNumber: 41
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -595,19 +618,19 @@ function CareerVaultUI() {
                                                     children: "How exam patterns changed (2019-2024) & 2025 predictions"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 278,
+                                                    lineNumber: 282,
                                                     columnNumber: 41
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/career-vault.tsx",
-                                            lineNumber: 276,
+                                            lineNumber: 280,
                                             columnNumber: 37
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/career-vault.tsx",
-                                    lineNumber: 272,
+                                    lineNumber: 276,
                                     columnNumber: 33
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -631,7 +654,7 @@ function CareerVaultUI() {
                                                     children: year.year
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 292,
+                                                    lineNumber: 296,
                                                     columnNumber: 45
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -651,7 +674,7 @@ function CareerVaultUI() {
                                                             className: "absolute bottom-0 w-full bg-gradient-to-t from-blue-600 to-blue-400"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 294,
+                                                            lineNumber: 298,
                                                             columnNumber: 49
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -664,7 +687,7 @@ function CareerVaultUI() {
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 301,
+                                                                    lineNumber: 305,
                                                                     columnNumber: 53
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -675,19 +698,19 @@ function CareerVaultUI() {
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 302,
+                                                                    lineNumber: 306,
                                                                     columnNumber: 53
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 300,
+                                                            lineNumber: 304,
                                                             columnNumber: 49
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 293,
+                                                    lineNumber: 297,
                                                     columnNumber: 45
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -697,7 +720,7 @@ function CareerVaultUI() {
                                                             children: "Diff:"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 306,
+                                                            lineNumber: 310,
                                                             columnNumber: 49
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -708,24 +731,24 @@ function CareerVaultUI() {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 307,
+                                                            lineNumber: 311,
                                                             columnNumber: 49
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 305,
+                                                    lineNumber: 309,
                                                     columnNumber: 45
                                                 }, this)
                                             ]
                                         }, year.year, true, {
                                             fileName: "[project]/components/career-vault.tsx",
-                                            lineNumber: 285,
+                                            lineNumber: 289,
                                             columnNumber: 41
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/components/career-vault.tsx",
-                                    lineNumber: 283,
+                                    lineNumber: 287,
                                     columnNumber: 33
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -738,36 +761,12 @@ function CareerVaultUI() {
                                                     className: "w-3 h-3 rounded bg-gradient-to-t from-blue-600 to-blue-400"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 316,
-                                                    columnNumber: 41
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                    className: "text-slate-400",
-                                                    children: "MCQs"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 317,
-                                                    columnNumber: 41
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/components/career-vault.tsx",
-                                            lineNumber: 315,
-                                            columnNumber: 37
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex items-center gap-2",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "w-3 h-3 rounded bg-slate-700"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/components/career-vault.tsx",
                                                     lineNumber: 320,
                                                     columnNumber: 41
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     className: "text-slate-400",
-                                                    children: "Theory"
+                                                    children: "MCQs"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/career-vault.tsx",
                                                     lineNumber: 321,
@@ -778,11 +777,35 @@ function CareerVaultUI() {
                                             fileName: "[project]/components/career-vault.tsx",
                                             lineNumber: 319,
                                             columnNumber: 37
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "flex items-center gap-2",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "w-3 h-3 rounded bg-slate-700"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/components/career-vault.tsx",
+                                                    lineNumber: 324,
+                                                    columnNumber: 41
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-slate-400",
+                                                    children: "Theory"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/components/career-vault.tsx",
+                                                    lineNumber: 325,
+                                                    columnNumber: 41
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/components/career-vault.tsx",
+                                            lineNumber: 323,
+                                            columnNumber: 37
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/career-vault.tsx",
-                                    lineNumber: 314,
+                                    lineNumber: 318,
                                     columnNumber: 33
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -797,14 +820,14 @@ function CareerVaultUI() {
                                                             className: "w-4 h-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 330,
+                                                            lineNumber: 334,
                                                             columnNumber: 49
                                                         }, this),
                                                         "Key Trends"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 329,
+                                                    lineNumber: 333,
                                                     columnNumber: 45
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -817,25 +840,25 @@ function CareerVaultUI() {
                                                                     children: "▸"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 336,
+                                                                    lineNumber: 340,
                                                                     columnNumber: 57
                                                                 }, this),
                                                                 trend
                                                             ]
                                                         }, idx, true, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 335,
+                                                            lineNumber: 339,
                                                             columnNumber: 53
                                                         }, this))
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 333,
+                                                    lineNumber: 337,
                                                     columnNumber: 45
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/career-vault.tsx",
-                                            lineNumber: 328,
+                                            lineNumber: 332,
                                             columnNumber: 41
                                         }, this),
                                         results.evolution.prediction2025 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -848,14 +871,14 @@ function CareerVaultUI() {
                                                             className: "w-4 h-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 348,
+                                                            lineNumber: 352,
                                                             columnNumber: 49
                                                         }, this),
                                                         "2025 Prediction"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 347,
+                                                    lineNumber: 351,
                                                     columnNumber: 45
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -869,41 +892,13 @@ function CareerVaultUI() {
                                                                     children: "MCQs"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 353,
+                                                                    lineNumber: 357,
                                                                     columnNumber: 53
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                     className: "text-blue-400 font-bold",
                                                                     children: [
                                                                         results.evolution.prediction2025.mcqPercent,
-                                                                        "%"
-                                                                    ]
-                                                                }, void 0, true, {
-                                                                    fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 354,
-                                                                    columnNumber: 53
-                                                                }, this)
-                                                            ]
-                                                        }, void 0, true, {
-                                                            fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 352,
-                                                            columnNumber: 49
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "flex justify-between text-xs",
-                                                            children: [
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "text-slate-400",
-                                                                    children: "Theory"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 357,
-                                                                    columnNumber: 53
-                                                                }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "text-slate-300 font-bold",
-                                                                    children: [
-                                                                        results.evolution.prediction2025.theoryPercent,
                                                                         "%"
                                                                     ]
                                                                 }, void 0, true, {
@@ -922,17 +917,17 @@ function CareerVaultUI() {
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                     className: "text-slate-400",
-                                                                    children: "Difficulty"
+                                                                    children: "Theory"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/career-vault.tsx",
                                                                     lineNumber: 361,
                                                                     columnNumber: 53
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "text-amber-400 font-bold",
+                                                                    className: "text-slate-300 font-bold",
                                                                     children: [
-                                                                        results.evolution.prediction2025.avgDifficulty,
-                                                                        "/10"
+                                                                        results.evolution.prediction2025.theoryPercent,
+                                                                        "%"
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/components/career-vault.tsx",
@@ -944,11 +939,39 @@ function CareerVaultUI() {
                                                             fileName: "[project]/components/career-vault.tsx",
                                                             lineNumber: 360,
                                                             columnNumber: 49
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "flex justify-between text-xs",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "text-slate-400",
+                                                                    children: "Difficulty"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/components/career-vault.tsx",
+                                                                    lineNumber: 365,
+                                                                    columnNumber: 53
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "text-amber-400 font-bold",
+                                                                    children: [
+                                                                        results.evolution.prediction2025.avgDifficulty,
+                                                                        "/10"
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/components/career-vault.tsx",
+                                                                    lineNumber: 366,
+                                                                    columnNumber: 53
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/components/career-vault.tsx",
+                                                            lineNumber: 364,
+                                                            columnNumber: 49
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 351,
+                                                    lineNumber: 355,
                                                     columnNumber: 45
                                                 }, this),
                                                 results.evolution.prediction2025.tip && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -961,12 +984,12 @@ function CareerVaultUI() {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/career-vault.tsx",
-                                                        lineNumber: 367,
+                                                        lineNumber: 371,
                                                         columnNumber: 53
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 366,
+                                                    lineNumber: 370,
                                                     columnNumber: 49
                                                 }, this),
                                                 results.evolution.prediction2025.newTopics && results.evolution.prediction2025.newTopics.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -977,7 +1000,7 @@ function CareerVaultUI() {
                                                             children: "New Topics to Watch"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 372,
+                                                            lineNumber: 376,
                                                             columnNumber: 53
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -987,36 +1010,36 @@ function CareerVaultUI() {
                                                                     children: topic
                                                                 }, idx, false, {
                                                                     fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 375,
+                                                                    lineNumber: 379,
                                                                     columnNumber: 61
                                                                 }, this))
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 373,
+                                                            lineNumber: 377,
                                                             columnNumber: 53
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 371,
+                                                    lineNumber: 375,
                                                     columnNumber: 49
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/career-vault.tsx",
-                                            lineNumber: 346,
+                                            lineNumber: 350,
                                             columnNumber: 41
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/career-vault.tsx",
-                                    lineNumber: 326,
+                                    lineNumber: 330,
                                     columnNumber: 33
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/career-vault.tsx",
-                            lineNumber: 271,
+                            lineNumber: 275,
                             columnNumber: 29
                         }, this),
                         results.importantQuestions && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1031,12 +1054,12 @@ function CareerVaultUI() {
                                                 className: "w-6 h-6 text-red-400"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/career-vault.tsx",
-                                                lineNumber: 393,
+                                                lineNumber: 397,
                                                 columnNumber: 41
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/career-vault.tsx",
-                                            lineNumber: 392,
+                                            lineNumber: 396,
                                             columnNumber: 37
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1050,33 +1073,37 @@ function CareerVaultUI() {
                                                             children: "AI PREDICTED"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 398,
+                                                            lineNumber: 402,
                                                             columnNumber: 45
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 396,
+                                                    lineNumber: 400,
                                                     columnNumber: 41
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                    className: "text-xs text-slate-500",
-                                                    children: "Questions most likely to appear in 2025 based on 5-year analysis"
-                                                }, void 0, false, {
+                                                    className: "text-xs text-muted-foreground",
+                                                    children: [
+                                                        "Questions most likely to appear in ",
+                                                        new Date().getFullYear() + 1,
+                                                        " based on 5-year analysis"
+                                                    ]
+                                                }, void 0, true, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 400,
+                                                    lineNumber: 404,
                                                     columnNumber: 41
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/career-vault.tsx",
-                                            lineNumber: 395,
+                                            lineNumber: 399,
                                             columnNumber: 37
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/career-vault.tsx",
-                                    lineNumber: 391,
+                                    lineNumber: 395,
                                     columnNumber: 33
                                 }, this),
                                 results.importantQuestions.sureShots && results.importantQuestions.sureShots.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1089,44 +1116,44 @@ function CareerVaultUI() {
                                                     className: "w-4 h-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 408,
+                                                    lineNumber: 412,
                                                     columnNumber: 45
                                                 }, this),
                                                 "Sure-Shot Questions (100% Repeat History)"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/career-vault.tsx",
-                                            lineNumber: 407,
+                                            lineNumber: 411,
                                             columnNumber: 41
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
                                             className: "space-y-2",
                                             children: results.importantQuestions.sureShots.map((q, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                                    className: "text-sm text-slate-200 flex items-start gap-2 bg-slate-900/50 p-2 rounded",
+                                                    className: "text-sm text-foreground dark:text-slate-200 flex items-start gap-2 bg-background dark:bg-slate-900/50 p-2 rounded border border-border dark:border-transparent",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Star$3e$__["Star"], {
-                                                            className: "w-4 h-4 text-yellow-400 flex-shrink-0 mt-0.5"
+                                                            className: "w-4 h-4 text-yellow-500 dark:text-yellow-400 flex-shrink-0 mt-0.5"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 414,
+                                                            lineNumber: 418,
                                                             columnNumber: 53
                                                         }, this),
                                                         q
                                                     ]
                                                 }, idx, true, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 413,
+                                                    lineNumber: 417,
                                                     columnNumber: 49
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/components/career-vault.tsx",
-                                            lineNumber: 411,
+                                            lineNumber: 415,
                                             columnNumber: 41
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/career-vault.tsx",
-                                    lineNumber: 406,
+                                    lineNumber: 410,
                                     columnNumber: 37
                                 }, this),
                                 results.importantQuestions.predictedQuestions && results.importantQuestions.predictedQuestions.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1137,7 +1164,7 @@ function CareerVaultUI() {
                                             children: "Top Predicted Questions"
                                         }, void 0, false, {
                                             fileName: "[project]/components/career-vault.tsx",
-                                            lineNumber: 425,
+                                            lineNumber: 429,
                                             columnNumber: 41
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1145,16 +1172,16 @@ function CareerVaultUI() {
                                             children: results.importantQuestions.predictedQuestions.slice(0, 5).map((q, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
                                                     initial: {
                                                         opacity: 0,
-                                                        x: -20
+                                                        y: 10
                                                     },
                                                     animate: {
                                                         opacity: 1,
-                                                        x: 0
+                                                        y: 0
                                                     },
                                                     transition: {
                                                         delay: idx * 0.1
                                                     },
-                                                    className: "flex items-start gap-4 p-3 rounded-lg bg-slate-900/50 border border-slate-800 hover:border-red-500/30 transition-colors",
+                                                    className: "flex items-start gap-3 sm:gap-4 p-3 rounded-lg bg-card/50 dark:bg-slate-900/50 border border-border dark:border-slate-800 hover:border-red-500/30 transition-colors shadow-sm",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             className: `flex-shrink-0 w-14 h-14 rounded-lg flex flex-col items-center justify-center ${q.probability >= 80 ? 'bg-red-500/20 border border-red-500/40' : q.probability >= 60 ? 'bg-orange-500/20 border border-orange-500/40' : 'bg-yellow-500/20 border border-yellow-500/40'}`,
@@ -1167,7 +1194,7 @@ function CareerVaultUI() {
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 440,
+                                                                    lineNumber: 444,
                                                                     columnNumber: 57
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1175,38 +1202,38 @@ function CareerVaultUI() {
                                                                     children: "LIKELY"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 444,
+                                                                    lineNumber: 448,
                                                                     columnNumber: 57
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 436,
+                                                            lineNumber: 440,
                                                             columnNumber: 53
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             className: "flex-1 min-w-0",
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                    className: "text-sm text-slate-200 mb-2",
+                                                                    className: "text-sm font-medium text-foreground dark:text-slate-200 mb-2",
                                                                     children: q.question
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 449,
+                                                                    lineNumber: 453,
                                                                     columnNumber: 57
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                     className: "flex flex-wrap gap-2 text-[10px]",
                                                                     children: [
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                            className: "px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700",
+                                                                            className: "px-2 py-0.5 rounded bg-secondary dark:bg-slate-800 text-muted-foreground dark:text-slate-400 border border-border dark:border-slate-700",
                                                                             children: [
                                                                                 "📚 ",
                                                                                 q.chapter
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/components/career-vault.tsx",
-                                                                            lineNumber: 451,
+                                                                            lineNumber: 455,
                                                                             columnNumber: 61
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1217,7 +1244,7 @@ function CareerVaultUI() {
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/components/career-vault.tsx",
-                                                                            lineNumber: 454,
+                                                                            lineNumber: 458,
                                                                             columnNumber: 61
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1228,7 +1255,7 @@ function CareerVaultUI() {
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/components/career-vault.tsx",
-                                                                            lineNumber: 457,
+                                                                            lineNumber: 461,
                                                                             columnNumber: 61
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1236,36 +1263,36 @@ function CareerVaultUI() {
                                                                             children: q.difficulty
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/components/career-vault.tsx",
-                                                                            lineNumber: 460,
+                                                                            lineNumber: 464,
                                                                             columnNumber: 61
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 450,
+                                                                    lineNumber: 454,
                                                                     columnNumber: 57
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 448,
+                                                            lineNumber: 452,
                                                             columnNumber: 53
                                                         }, this)
                                                     ]
                                                 }, idx, true, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 428,
+                                                    lineNumber: 432,
                                                     columnNumber: 49
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/components/career-vault.tsx",
-                                            lineNumber: 426,
+                                            lineNumber: 430,
                                             columnNumber: 41
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/career-vault.tsx",
-                                    lineNumber: 424,
+                                    lineNumber: 428,
                                     columnNumber: 37
                                 }, this),
                                 results.importantQuestions.chapterWiseImportance && results.importantQuestions.chapterWiseImportance.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1278,47 +1305,47 @@ function CareerVaultUI() {
                                                     className: "w-4 h-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 478,
+                                                    lineNumber: 482,
                                                     columnNumber: 45
                                                 }, this),
                                                 "Chapter Weightage"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/career-vault.tsx",
-                                            lineNumber: 477,
+                                            lineNumber: 481,
                                             columnNumber: 41
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "grid grid-cols-1 md:grid-cols-2 gap-3",
+                                            className: "grid grid-cols-1 sm:grid-cols-2 gap-3",
                                             children: results.importantQuestions.chapterWiseImportance.map((ch, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "p-3 rounded-lg bg-slate-900/50 border border-slate-800",
+                                                    className: "p-3 rounded-lg bg-card/50 dark:bg-slate-900/50 border border-border dark:border-slate-800 shadow-sm",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             className: "flex justify-between items-center mb-2",
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "text-sm font-semibold text-slate-300",
+                                                                    className: "text-sm font-semibold text-foreground/80 dark:text-slate-300",
                                                                     children: ch.chapter
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 485,
+                                                                    lineNumber: 489,
                                                                     columnNumber: 57
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "text-xs font-bold text-orange-400",
+                                                                    className: "text-xs font-bold text-orange-600 dark:text-orange-400",
                                                                     children: [
                                                                         ch.weightage,
                                                                         "%"
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 486,
+                                                                    lineNumber: 490,
                                                                     columnNumber: 57
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 484,
+                                                            lineNumber: 488,
                                                             columnNumber: 53
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1333,12 +1360,12 @@ function CareerVaultUI() {
                                                                 className: "h-full bg-gradient-to-r from-orange-600 to-red-400"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/career-vault.tsx",
-                                                                lineNumber: 489,
+                                                                lineNumber: 493,
                                                                 columnNumber: 57
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 488,
+                                                            lineNumber: 492,
                                                             columnNumber: 53
                                                         }, this),
                                                         ch.mustStudyTopics && ch.mustStudyTopics.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1348,29 +1375,29 @@ function CareerVaultUI() {
                                                                     children: topic
                                                                 }, tidx, false, {
                                                                     fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 498,
+                                                                    lineNumber: 502,
                                                                     columnNumber: 65
                                                                 }, this))
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 496,
+                                                            lineNumber: 500,
                                                             columnNumber: 57
                                                         }, this)
                                                     ]
                                                 }, idx, true, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 483,
+                                                    lineNumber: 487,
                                                     columnNumber: 49
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/components/career-vault.tsx",
-                                            lineNumber: 481,
+                                            lineNumber: 485,
                                             columnNumber: 41
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/career-vault.tsx",
-                                    lineNumber: 476,
+                                    lineNumber: 480,
                                     columnNumber: 37
                                 }, this),
                                 results.importantQuestions.newPredictions && results.importantQuestions.newPredictions.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1383,14 +1410,14 @@ function CareerVaultUI() {
                                                     className: "w-4 h-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 514,
+                                                    lineNumber: 518,
                                                     columnNumber: 45
                                                 }, this),
                                                 "New Questions Expected (Never Asked Before)"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/career-vault.tsx",
-                                            lineNumber: 513,
+                                            lineNumber: 517,
                                             columnNumber: 41
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -1403,31 +1430,31 @@ function CareerVaultUI() {
                                                             children: "⚡"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 520,
+                                                            lineNumber: 524,
                                                             columnNumber: 53
                                                         }, this),
                                                         q
                                                     ]
                                                 }, idx, true, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 519,
+                                                    lineNumber: 523,
                                                     columnNumber: 49
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/components/career-vault.tsx",
-                                            lineNumber: 517,
+                                            lineNumber: 521,
                                             columnNumber: 41
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/career-vault.tsx",
-                                    lineNumber: 512,
+                                    lineNumber: 516,
                                     columnNumber: 37
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/career-vault.tsx",
-                            lineNumber: 390,
+                            lineNumber: 394,
                             columnNumber: 29
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1443,7 +1470,7 @@ function CareerVaultUI() {
                                                 children: "Trusted Portals:"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/career-vault.tsx",
-                                                lineNumber: 535,
+                                                lineNumber: 539,
                                                 columnNumber: 41
                                             }, this),
                                             results.papers.map((paper, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1459,7 +1486,7 @@ function CareerVaultUI() {
                                                                         children: paper.portalName
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/components/career-vault.tsx",
-                                                                        lineNumber: 540,
+                                                                        lineNumber: 544,
                                                                         columnNumber: 57
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1467,13 +1494,13 @@ function CareerVaultUI() {
                                                                         children: paper.description
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/components/career-vault.tsx",
-                                                                        lineNumber: 541,
+                                                                        lineNumber: 545,
                                                                         columnNumber: 57
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/components/career-vault.tsx",
-                                                                lineNumber: 539,
+                                                                lineNumber: 543,
                                                                 columnNumber: 53
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
@@ -1486,36 +1513,36 @@ function CareerVaultUI() {
                                                                         className: "w-3 h-3 mr-2"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/components/career-vault.tsx",
-                                                                        lineNumber: 549,
+                                                                        lineNumber: 553,
                                                                         columnNumber: 57
                                                                     }, this),
                                                                     "SEARCH"
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/components/career-vault.tsx",
-                                                                lineNumber: 543,
+                                                                lineNumber: 547,
                                                                 columnNumber: 53
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/career-vault.tsx",
-                                                        lineNumber: 538,
+                                                        lineNumber: 542,
                                                         columnNumber: 49
                                                     }, this)
                                                 }, idx, false, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 537,
+                                                    lineNumber: 541,
                                                     columnNumber: 45
                                                 }, this))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/career-vault.tsx",
-                                        lineNumber: 534,
+                                        lineNumber: 538,
                                         columnNumber: 37
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/career-vault.tsx",
-                                    lineNumber: 532,
+                                    lineNumber: 536,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1528,14 +1555,14 @@ function CareerVaultUI() {
                                                     className: "w-5 h-5 text-emerald-400"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 562,
+                                                    lineNumber: 566,
                                                     columnNumber: 37
                                                 }, this),
                                                 "Career Impact"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/career-vault.tsx",
-                                            lineNumber: 561,
+                                            lineNumber: 565,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1551,7 +1578,7 @@ function CareerVaultUI() {
                                                                     children: "MARKET DEMAND"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 568,
+                                                                    lineNumber: 572,
                                                                     columnNumber: 45
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1562,13 +1589,13 @@ function CareerVaultUI() {
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 569,
+                                                                    lineNumber: 573,
                                                                     columnNumber: 45
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 567,
+                                                            lineNumber: 571,
                                                             columnNumber: 41
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1583,18 +1610,18 @@ function CareerVaultUI() {
                                                                 className: "h-full bg-gradient-to-r from-emerald-600 to-emerald-400"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/career-vault.tsx",
-                                                                lineNumber: 572,
+                                                                lineNumber: 576,
                                                                 columnNumber: 45
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 571,
+                                                            lineNumber: 575,
                                                             columnNumber: 41
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 566,
+                                                    lineNumber: 570,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1607,7 +1634,7 @@ function CareerVaultUI() {
                                                                     children: "Top Roles"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 582,
+                                                                    lineNumber: 586,
                                                                     columnNumber: 45
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1617,18 +1644,18 @@ function CareerVaultUI() {
                                                                             children: role
                                                                         }, idx, false, {
                                                                             fileName: "[project]/components/career-vault.tsx",
-                                                                            lineNumber: 585,
+                                                                            lineNumber: 589,
                                                                             columnNumber: 53
                                                                         }, this))
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 583,
+                                                                    lineNumber: 587,
                                                                     columnNumber: 45
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 581,
+                                                            lineNumber: 585,
                                                             columnNumber: 41
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1638,7 +1665,7 @@ function CareerVaultUI() {
                                                                     children: "Hiring Companies"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 590,
+                                                                    lineNumber: 594,
                                                                     columnNumber: 45
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1648,24 +1675,24 @@ function CareerVaultUI() {
                                                                             children: company
                                                                         }, idx, false, {
                                                                             fileName: "[project]/components/career-vault.tsx",
-                                                                            lineNumber: 593,
+                                                                            lineNumber: 597,
                                                                             columnNumber: 53
                                                                         }, this))
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/career-vault.tsx",
-                                                                    lineNumber: 591,
+                                                                    lineNumber: 595,
                                                                     columnNumber: 45
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/components/career-vault.tsx",
-                                                            lineNumber: 589,
+                                                            lineNumber: 593,
                                                             columnNumber: 41
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 580,
+                                                    lineNumber: 584,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1679,30 +1706,30 @@ function CareerVaultUI() {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/career-vault.tsx",
-                                                        lineNumber: 600,
+                                                        lineNumber: 604,
                                                         columnNumber: 41
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/career-vault.tsx",
-                                                    lineNumber: 599,
+                                                    lineNumber: 603,
                                                     columnNumber: 37
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/career-vault.tsx",
-                                            lineNumber: 565,
+                                            lineNumber: 569,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/career-vault.tsx",
-                                    lineNumber: 560,
+                                    lineNumber: 564,
                                     columnNumber: 29
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/career-vault.tsx",
-                            lineNumber: 530,
+                            lineNumber: 534,
                             columnNumber: 25
                         }, this)
                     ]

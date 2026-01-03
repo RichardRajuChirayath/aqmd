@@ -8,12 +8,12 @@ globalThis.__BUILD_MANIFEST = {
   ],
   "lowPriorityFiles": [],
   "rootMainFiles": [
-    "static/chunks/0818565ef9f0e542.js",
-    "static/chunks/4a2e6ca9bc162ffe.js",
-    "static/chunks/0ff423a9fcc0186e.js",
+    "static/chunks/1c59e92d85ae582b.js",
+    "static/chunks/112f346e31f991df.js",
     "static/chunks/6740f161f60c6ab5.js",
+    "static/chunks/0ff423a9fcc0186e.js",
     "static/chunks/497f7b5edc7d3fce.js",
-    "static/chunks/turbopack-2f89586fb5036760.js"
+    "static/chunks/turbopack-6c8a0fad740137aa.js"
   ]
 };
 globalThis.__BUILD_MANIFEST.lowPriorityFiles = [

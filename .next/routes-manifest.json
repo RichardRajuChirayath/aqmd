@@ -51,6 +51,14 @@
         "nxtPid": "nxtPid"
       },
       "namedRegex": "^/result/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/study/[sessionId]",
+      "regex": "^/study/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPsessionId": "nxtPsessionId"
+      },
+      "namedRegex": "^/study/(?<nxtPsessionId>[^/]+?)(?:/)?$"
     }
   ],
   "staticRoutes": [
@@ -127,6 +135,36 @@
       "namedRegex": "^/api/search(?:/)?$"
     },
     {
+      "page": "/api/study/help",
+      "regex": "^/api/study/help(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/study/help(?:/)?$"
+    },
+    {
+      "page": "/api/study/page",
+      "regex": "^/api/study/page(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/study/page(?:/)?$"
+    },
+    {
+      "page": "/api/study/parse",
+      "regex": "^/api/study/parse(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/study/parse(?:/)?$"
+    },
+    {
+      "page": "/api/study/session",
+      "regex": "^/api/study/session(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/study/session(?:/)?$"
+    },
+    {
+      "page": "/api/user-stats",
+      "regex": "^/api/user\\-stats(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/user\\-stats(?:/)?$"
+    },
+    {
       "page": "/history",
       "regex": "^/history(?:/)?$",
       "routeKeys": {},
@@ -149,6 +187,12 @@
       "regex": "^/result(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/result(?:/)?$"
+    },
+    {
+      "page": "/study",
+      "regex": "^/study(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/study(?:/)?$"
     }
   ],
   "dataRoutes": [],

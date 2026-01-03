@@ -12,11 +12,18 @@
   "/api/papers/discover/route": "/api/papers/discover",
   "/api/pathway/[id]/route": "/api/pathway/[id]",
   "/api/search/route": "/api/search",
+  "/api/study/help/route": "/api/study/help",
+  "/api/study/page/route": "/api/study/page",
+  "/api/study/parse/route": "/api/study/parse",
+  "/api/study/session/route": "/api/study/session",
+  "/api/user-stats/route": "/api/user-stats",
   "/history/page": "/history",
   "/page": "/",
   "/papers/page": "/papers",
   "/pathways/[id]/page": "/pathways/[id]",
   "/pathways/page": "/pathways",
   "/result/[id]/page": "/result/[id]",
-  "/result/page": "/result"
+  "/result/page": "/result",
+  "/study/[sessionId]/page": "/study/[sessionId]",
+  "/study/page": "/study"
 }
