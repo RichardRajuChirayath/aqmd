@@ -2,8 +2,16 @@ import { NextResponse } from 'next/server'
 import Groq from 'groq-sdk'
 
 export async function POST(request: Request) {
+    let question = ''
+    let expectedAnswer = ''
+    let userAnswer = ''
+
     try {
-        const { question, expectedAnswer, userAnswer } = await request.json()
+        // Parse request ONCE and store in variables
+        const body = await request.json()
+        question = body.question
+        expectedAnswer = body.expectedAnswer
+        userAnswer = body.userAnswer
 
         if (!question || !expectedAnswer || !userAnswer) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -47,16 +55,15 @@ Respond with ONLY "true" if correct, or "false" if incorrect.`
     } catch (error: any) {
         console.error('Answer evaluation error:', error)
 
-        // Fallback to simple matching if AI fails
-        try {
-            const { expectedAnswer, userAnswer } = await request.json()
+        // Fallback to simple matching if AI fails (using already-parsed variables)
+        if (expectedAnswer && userAnswer) {
             const isCorrect = userAnswer.toLowerCase().trim() === expectedAnswer.toLowerCase().trim()
             return NextResponse.json({ isCorrect })
-        } catch {
-            return NextResponse.json(
-                { error: error?.message || 'Evaluation failed', isCorrect: false },
-                { status: 500 }
-            )
         }
+
+        return NextResponse.json(
+            { error: error?.message || 'Evaluation failed', isCorrect: false },
+            { status: 500 }
+        )
     }
 }
