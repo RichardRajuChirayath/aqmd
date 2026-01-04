@@ -105,14 +105,16 @@ export default function StudyPage() {
             return
         }
 
-        // Check file size (max 50MB)
-        const maxSize = 50 * 1024 * 1024 // 50MB in bytes
+        // Check file size (max 10MB for localStorage compatibility)
+        // Base64 encoding increases size by ~33%, so 10MB PDF → ~13MB base64
+        // localStorage limit is typically 5-10MB per domain
+        const maxSize = 10 * 1024 * 1024 // 10MB in bytes
         if (file.size > maxSize) {
-            alert("File too large. Maximum size is 50MB.")
+            alert("File too large. Maximum size is 10MB.\n\nTip: Try compressing your PDF using online tools.")
             return
         }
 
-        console.log("[Study] Starting upload for:", file.name, "Size:", file.size)
+        console.log("[Study] Starting upload for:", file.name, "Size:", (file.size / 1024 / 1024).toFixed(2), "MB")
         setIsUploading(true)
 
         // Convert PDF to data URL for LOCAL storage only (not sent to server - too large)
@@ -121,7 +123,7 @@ export default function StudyPage() {
         reader.onload = async (e) => {
             try {
                 const pdfUrl = e.target?.result as string
-                console.log("[Study] PDF loaded, size:", pdfUrl.length, "chars")
+                console.log("[Study] PDF loaded, base64 size:", (pdfUrl.length / 1024 / 1024).toFixed(2), "MB")
 
                 // Create session via API - DO NOT send pdfUrl (too large for DB)
                 const res = await fetch(apiUrl("/api/study/session"), {
@@ -138,12 +140,22 @@ export default function StudyPage() {
                 console.log("[Study] Session response:", data)
 
                 if (data.session) {
-                    // Store PDF in localStorage (client-side only)
-                    localStorage.setItem(`study_session_${data.session.id}`, JSON.stringify({
-                        ...data.session,
-                        pdfUrl // PDF stays in browser only
-                    }))
-                    router.push(`/study/${data.session.id}`)
+                    try {
+                        // Store PDF in localStorage (client-side only)
+                        localStorage.setItem(`study_session_${data.session.id}`, JSON.stringify({
+                            ...data.session,
+                            pdfUrl // PDF stays in browser only
+                        }))
+                        router.push(`/study/${data.session.id}`)
+                    } catch (storageError: any) {
+                        console.error("[Study] localStorage error:", storageError)
+                        if (storageError.name === 'QuotaExceededError') {
+                            alert("Storage quota exceeded!\n\nYour PDF is too large for browser storage.\nPlease try a smaller file (under 10MB).")
+                        } else {
+                            alert("Failed to store PDF. Please try again.")
+                        }
+                        setIsUploading(false)
+                    }
                 } else {
                     console.error("No session returned:", data)
                     alert("Failed to create session: " + (data.error || "Unknown error"))
@@ -235,7 +247,8 @@ export default function StudyPage() {
                                     <Upload className="w-8 h-8 text-purple-500" />
                                 </div>
                                 <h3 className="text-xl font-bold mb-2">Drop your PDF here</h3>
-                                <p className="text-muted-foreground mb-6">or click to browse</p>
+                                <p className="text-muted-foreground mb-2">or click to browse</p>
+                                <p className="text-xs text-slate-500 font-mono">Maximum file size: 10MB</p>
                                 <input
                                     type="file"
                                     accept=".pdf"
