@@ -7,6 +7,7 @@ import { motion } from "framer-motion"
 import { useGuestId } from "@/lib/guest-identity"
 import { apiUrl } from "@/lib/api-url"
 import { LoadingFlow } from "@/components/loading-flow"
+import { LiveStatsBanner } from "@/components/live-stats-banner"
 
 export default function HomePage() {
   const [question, setQuestion] = useState("")
@@ -68,6 +69,9 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-background dark:bg-slate-950 text-foreground selection:bg-blue-500/30">
+      {/* Live Stats Banner */}
+      <LiveStatsBanner />
+
       {/* Background Effects */}
       <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
         <div className="absolute inset-0 blueprint-grid opacity-20" />
