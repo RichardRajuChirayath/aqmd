@@ -193,20 +193,43 @@ export default function StudySessionPage({ params }: { params: Promise<{ session
     }
 
     // Submit answer to reflection question
-    const handleSubmitAnswer = (questionIndex: number, answer: string) => {
-        // For now, just mark as answered
-        // In production, send to AI for evaluation
-        if (pageData?.reflectionQs) {
+    const handleSubmitAnswer = async (questionIndex: number, answer: string) => {
+        if (!pageData?.reflectionQs) return
+
+        // Update to show loading state
+        const loadingQs = [...pageData.reflectionQs]
+        loadingQs[questionIndex] = {
+            ...loadingQs[questionIndex],
+            userAnswer: answer,
+            isCorrect: undefined // Reset to show loading
+        }
+        setPageData({ ...pageData, reflectionQs: loadingQs })
+
+        try {
+            // Send to AI for evaluation
+            const res = await fetch(apiUrl('/api/study/evaluate-answer'), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    question: pageData.reflectionQs[questionIndex].question,
+                    expectedAnswer: pageData.reflectionQs[questionIndex].expectedAnswer,
+                    userAnswer: answer
+                })
+            })
+
+            const data = await res.json()
+
+            // Update with AI result
             const updatedQs = [...pageData.reflectionQs]
             updatedQs[questionIndex] = {
                 ...updatedQs[questionIndex],
                 userAnswer: answer,
-                isCorrect: true // Simplified - AI would evaluate
+                isCorrect: data.isCorrect
             }
-            setPageData({
-                ...pageData,
-                reflectionQs: updatedQs
-            })
+            setPageData({ ...pageData, reflectionQs: updatedQs })
+        } catch (error) {
+            console.error('Failed to evaluate answer:', error)
+            // On error, don't mark as correct - let user try again
         }
     }
 

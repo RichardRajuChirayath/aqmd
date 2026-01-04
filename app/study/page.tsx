@@ -105,10 +105,10 @@ export default function StudyPage() {
             return
         }
 
-        // Check file size (max 20MB)
-        const maxSize = 20 * 1024 * 1024 // 20MB in bytes
+        // Check file size (max 50MB)
+        const maxSize = 50 * 1024 * 1024 // 50MB in bytes
         if (file.size > maxSize) {
-            alert("File too large. Maximum size is 20MB.")
+            alert("File too large. Maximum size is 50MB.")
             return
         }
 
