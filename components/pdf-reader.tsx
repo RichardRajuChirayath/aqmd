@@ -134,40 +134,47 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
                 Zoom with buttons • Scroll to navigate when zoomed
             </div>
 
-            {/* PDF Viewer - Uses NATIVE browser scrolling */}
+            {/* PDF Viewer - ALWAYS shows scrollbars when content overflows */}
             <div
                 ref={containerRef}
-                className="flex-1 overflow-auto flex items-center justify-center p-4 bg-slate-950"
+                className="flex-1 p-4 bg-slate-950"
+                style={{
+                    overflow: 'scroll', // ALWAYS show scrollbars
+                    display: 'block', // Remove flex so scrollbars work
+                    position: 'relative'
+                }}
             >
                 {loading && (
                     <div className="flex items-center justify-center h-full">
                         <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
                     </div>
                 )}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="shadow-2xl rounded-lg overflow-hidden inline-block"
-                >
-                    <Document
-                        file={pdfUrl}
-                        onLoadSuccess={onDocumentLoadSuccess}
-                        loading={
-                            <div className="flex items-center justify-center p-20">
-                                <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-                            </div>
-                        }
+                <div className="flex items-center justify-center min-h-full">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="shadow-2xl rounded-lg overflow-hidden inline-block"
                     >
-                        <Page
-                            pageNumber={pageNumber}
-                            scale={scale}
-                            onLoadSuccess={onPageLoadSuccess}
-                            renderTextLayer={false}
-                            renderAnnotationLayer={false}
-                            className="pdf-page"
-                        />
-                    </Document>
-                </motion.div>
+                        <Document
+                            file={pdfUrl}
+                            onLoadSuccess={onDocumentLoadSuccess}
+                            loading={
+                                <div className="flex items-center justify-center p-20">
+                                    <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+                                </div>
+                            }
+                        >
+                            <Page
+                                pageNumber={pageNumber}
+                                scale={scale}
+                                onLoadSuccess={onPageLoadSuccess}
+                                renderTextLayer={false}
+                                renderAnnotationLayer={false}
+                                className="pdf-page"
+                            />
+                        </Document>
+                    </motion.div>
+                </div>
             </div>
         </div>
     )
