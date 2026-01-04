@@ -23,6 +23,7 @@ const navItems = [
     { name: "Vault", href: "/papers", icon: GraduationCap },
     { name: "Study", href: "/study", icon: BookOpen },
     { name: "History", href: "/history", icon: History },
+    { name: "Dev Settings", href: "/admin/login", icon: Settings },
 ]
 
 export function DashboardNav() {
