@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from "react"
 import { Document, Page, pdfjs } from "react-pdf"
-import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Loader2 } from "lucide-react"
+import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Loader2, Maximize2 } from "lucide-react"
 import { motion } from "framer-motion"
 
 // Set up PDF.js worker
@@ -21,6 +21,13 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
     const [scale, setScale] = useState<number>(1.0)
     const [loading, setLoading] = useState<boolean>(true)
     const containerRef = useRef<HTMLDivElement>(null)
+    const pdfWrapperRef = useRef<HTMLDivElement>(null)
+
+    // Touch gesture states
+    const [isPanning, setIsPanning] = useState(false)
+    const [startPan, setStartPan] = useState({ x: 0, y: 0 })
+    const [panOffset, setPanOffset] = useState({ x: 0, y: 0 })
+    const touchStartDistance = useRef<number>(0)
 
     function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
         setNumPages(numPages)
@@ -42,6 +49,7 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
             const newPage = pageNumber - 1
             setPageNumber(newPage)
             onPageChange(newPage, numPages)
+            setPanOffset({ x: 0, y: 0 }) // Reset pan on page change
         }
     }, [pageNumber, numPages, onPageChange])
 
@@ -50,11 +58,19 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
             const newPage = pageNumber + 1
             setPageNumber(newPage)
             onPageChange(newPage, numPages)
+            setPanOffset({ x: 0, y: 0 }) // Reset pan on page change
         }
     }, [pageNumber, numPages, onPageChange])
 
-    const zoomIn = () => setScale(prev => Math.min(prev + 0.2, 2.5))
-    const zoomOut = () => setScale(prev => Math.max(prev - 0.2, 0.5))
+    const zoomIn = () => setScale(prev => Math.min(prev + 0.3, 3.0))
+    const zoomOut = () => {
+        setScale(prev => Math.max(prev - 0.3, 0.8))
+        if (scale < 1.5) setPanOffset({ x: 0, y: 0 }) // Reset pan when zooming out
+    }
+    const resetZoom = () => {
+        setScale(1.0)
+        setPanOffset({ x: 0, y: 0 })
+    }
 
     // Keyboard navigation
     useEffect(() => {
@@ -66,18 +82,61 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
         return () => window.removeEventListener("keydown", handleKeyDown)
     }, [goToPrevPage, goToNextPage])
 
-    // Click to navigate - left half = prev, right half = next
-    const handlePdfClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        const rect = e.currentTarget.getBoundingClientRect()
-        const clickX = e.clientX - rect.left
-        const halfWidth = rect.width / 2
+    // Touch gestures - Pinch to zoom and pan
+    useEffect(() => {
+        const wrapper = pdfWrapperRef.current
+        if (!wrapper) return
 
-        if (clickX < halfWidth) {
-            goToPrevPage()
-        } else {
-            goToNextPage()
+        const handleTouchStart = (e: TouchEvent) => {
+            if (e.touches.length === 2) {
+                // Pinch zoom
+                const dx = e.touches[0].clientX - e.touches[1].clientX
+                const dy = e.touches[0].clientY - e.touches[1].clientY
+                touchStartDistance.current = Math.sqrt(dx * dx + dy * dy)
+            } else if (e.touches.length === 1 && scale > 1) {
+                // Pan
+                setIsPanning(true)
+                setStartPan({
+                    x: e.touches[0].clientX - panOffset.x,
+                    y: e.touches[0].clientY - panOffset.y
+                })
+            }
         }
-    }
+
+        const handleTouchMove = (e: TouchEvent) => {
+            if (e.touches.length === 2) {
+                // Pinch zoom
+                e.preventDefault()
+                const dx = e.touches[0].clientX - e.touches[1].clientX
+                const dy = e.touches[0].clientY - e.touches[1].clientY
+                const distance = Math.sqrt(dx * dx + dy * dy)
+                const scaleDiff = distance / touchStartDistance.current
+                setScale(prev => Math.max(0.8, Math.min(3.0, prev * scaleDiff)))
+                touchStartDistance.current = distance
+            } else if (isPanning && e.touches.length === 1) {
+                // Pan
+                e.preventDefault()
+                setPanOffset({
+                    x: e.touches[0].clientX - startPan.x,
+                    y: e.touches[0].clientY - startPan.y
+                })
+            }
+        }
+
+        const handleTouchEnd = () => {
+            setIsPanning(false)
+        }
+
+        wrapper.addEventListener('touchstart', handleTouchStart, { passive: false })
+        wrapper.addEventListener('touchmove', handleTouchMove, { passive: false })
+        wrapper.addEventListener('touchend', handleTouchEnd)
+
+        return () => {
+            wrapper.removeEventListener('touchstart', handleTouchStart)
+            wrapper.removeEventListener('touchmove', handleTouchMove)
+            wrapper.removeEventListener('touchend', handleTouchEnd)
+        }
+    }, [scale, isPanning, startPan, panOffset])
 
     return (
         <div className="flex flex-col h-full bg-slate-950">
@@ -110,9 +169,12 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
                     >
                         <ZoomOut className="w-5 h-5" />
                     </button>
-                    <span className="text-xs font-mono text-slate-400 min-w-[50px] text-center">
-                        {Math.round(scale * 100)}%
-                    </span>
+                    <button
+                        onClick={resetZoom}
+                        className="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors"
+                    >
+                        <span className="text-xs font-mono text-slate-400">{Math.round(scale * 100)}%</span>
+                    </button>
                     <button
                         onClick={zoomIn}
                         className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors"
@@ -122,15 +184,16 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
                 </div>
             </div>
 
-            {/* Tap hint */}
+            {/* Interaction hint */}
             <div className="text-center py-1 bg-slate-900/50 text-xs text-slate-500">
-                Tap left/right side of PDF to navigate • Use arrow keys
+                Pinch to zoom • Drag when zoomed • Tap edges to navigate
             </div>
 
-            {/* PDF Viewer */}
+            {/* PDF Viewer with touch support */}
             <div
                 ref={containerRef}
                 className="flex-1 overflow-auto flex items-start justify-center p-4 bg-slate-950"
+                style={{ touchAction: scale > 1 ? 'none' : 'auto' }}
             >
                 {loading && (
                     <div className="flex items-center justify-center h-full">
@@ -138,10 +201,15 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
                     </div>
                 )}
                 <motion.div
+                    ref={pdfWrapperRef}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="shadow-2xl rounded-lg overflow-hidden cursor-pointer"
-                    onClick={handlePdfClick}
+                    className="shadow-2xl rounded-lg overflow-hidden"
+                    style={{
+                        transform: `translate(${panOffset.x}px, ${panOffset.y}px)`,
+                        cursor: scale > 1 ? (isPanning ? 'grabbing' : 'grab') : 'default',
+                        transition: isPanning ? 'none' : 'transform 0.2s ease-out'
+                    }}
                 >
                     <Document
                         file={pdfUrl}
@@ -166,4 +234,3 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
         </div>
     )
 }
-
