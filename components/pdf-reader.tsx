@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from "react"
 import { Document, Page, pdfjs } from "react-pdf"
-import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Loader2, Maximize2 } from "lucide-react"
+import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Loader2 } from "lucide-react"
 import { motion } from "framer-motion"
 
 // Set up PDF.js worker
@@ -21,13 +21,6 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
     const [scale, setScale] = useState<number>(1.0)
     const [loading, setLoading] = useState<boolean>(true)
     const containerRef = useRef<HTMLDivElement>(null)
-    const pdfWrapperRef = useRef<HTMLDivElement>(null)
-
-    // Touch gesture states
-    const [isPanning, setIsPanning] = useState(false)
-    const [startPan, setStartPan] = useState({ x: 0, y: 0 })
-    const [panOffset, setPanOffset] = useState({ x: 0, y: 0 })
-    const touchStartDistance = useRef<number>(0)
 
     function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
         setNumPages(numPages)
@@ -49,7 +42,11 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
             const newPage = pageNumber - 1
             setPageNumber(newPage)
             onPageChange(newPage, numPages)
-            setPanOffset({ x: 0, y: 0 }) // Reset pan on page change
+            // Reset scroll position on page change
+            if (containerRef.current) {
+                containerRef.current.scrollTop = 0
+                containerRef.current.scrollLeft = 0
+            }
         }
     }, [pageNumber, numPages, onPageChange])
 
@@ -58,18 +55,22 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
             const newPage = pageNumber + 1
             setPageNumber(newPage)
             onPageChange(newPage, numPages)
-            setPanOffset({ x: 0, y: 0 }) // Reset pan on page change
+            // Reset scroll position on page change
+            if (containerRef.current) {
+                containerRef.current.scrollTop = 0
+                containerRef.current.scrollLeft = 0
+            }
         }
     }, [pageNumber, numPages, onPageChange])
 
     const zoomIn = () => setScale(prev => Math.min(prev + 0.3, 3.0))
-    const zoomOut = () => {
-        setScale(prev => Math.max(prev - 0.3, 0.8))
-        if (scale < 1.5) setPanOffset({ x: 0, y: 0 }) // Reset pan when zooming out
-    }
+    const zoomOut = () => setScale(prev => Math.max(prev - 0.3, 0.8))
     const resetZoom = () => {
         setScale(1.0)
-        setPanOffset({ x: 0, y: 0 })
+        if (containerRef.current) {
+            containerRef.current.scrollTop = 0
+            containerRef.current.scrollLeft = 0
+        }
     }
 
     // Keyboard navigation
@@ -81,62 +82,6 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
         window.addEventListener("keydown", handleKeyDown)
         return () => window.removeEventListener("keydown", handleKeyDown)
     }, [goToPrevPage, goToNextPage])
-
-    // Touch gestures - Pinch to zoom and pan
-    useEffect(() => {
-        const wrapper = pdfWrapperRef.current
-        if (!wrapper) return
-
-        const handleTouchStart = (e: TouchEvent) => {
-            if (e.touches.length === 2) {
-                // Pinch zoom
-                const dx = e.touches[0].clientX - e.touches[1].clientX
-                const dy = e.touches[0].clientY - e.touches[1].clientY
-                touchStartDistance.current = Math.sqrt(dx * dx + dy * dy)
-            } else if (e.touches.length === 1 && scale > 1) {
-                // Pan
-                setIsPanning(true)
-                setStartPan({
-                    x: e.touches[0].clientX - panOffset.x,
-                    y: e.touches[0].clientY - panOffset.y
-                })
-            }
-        }
-
-        const handleTouchMove = (e: TouchEvent) => {
-            if (e.touches.length === 2) {
-                // Pinch zoom
-                e.preventDefault()
-                const dx = e.touches[0].clientX - e.touches[1].clientX
-                const dy = e.touches[0].clientY - e.touches[1].clientY
-                const distance = Math.sqrt(dx * dx + dy * dy)
-                const scaleDiff = distance / touchStartDistance.current
-                setScale(prev => Math.max(0.8, Math.min(3.0, prev * scaleDiff)))
-                touchStartDistance.current = distance
-            } else if (isPanning && e.touches.length === 1) {
-                // Pan
-                e.preventDefault()
-                setPanOffset({
-                    x: e.touches[0].clientX - startPan.x,
-                    y: e.touches[0].clientY - startPan.y
-                })
-            }
-        }
-
-        const handleTouchEnd = () => {
-            setIsPanning(false)
-        }
-
-        wrapper.addEventListener('touchstart', handleTouchStart, { passive: false })
-        wrapper.addEventListener('touchmove', handleTouchMove, { passive: false })
-        wrapper.addEventListener('touchend', handleTouchEnd)
-
-        return () => {
-            wrapper.removeEventListener('touchstart', handleTouchStart)
-            wrapper.removeEventListener('touchmove', handleTouchMove)
-            wrapper.removeEventListener('touchend', handleTouchEnd)
-        }
-    }, [scale, isPanning, startPan, panOffset])
 
     return (
         <div className="flex flex-col h-full bg-slate-950">
@@ -186,14 +131,13 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
 
             {/* Interaction hint */}
             <div className="text-center py-1 bg-slate-900/50 text-xs text-slate-500">
-                Pinch to zoom • Drag when zoomed • Tap edges to navigate
+                Zoom with buttons • Scroll to navigate when zoomed
             </div>
 
-            {/* PDF Viewer with touch support */}
+            {/* PDF Viewer - Uses NATIVE browser scrolling */}
             <div
                 ref={containerRef}
-                className="flex-1 overflow-auto flex items-start justify-center p-4 bg-slate-950"
-                style={{ touchAction: scale > 1 ? 'none' : 'auto' }}
+                className="flex-1 overflow-auto flex items-center justify-center p-4 bg-slate-950"
             >
                 {loading && (
                     <div className="flex items-center justify-center h-full">
@@ -201,15 +145,9 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
                     </div>
                 )}
                 <motion.div
-                    ref={pdfWrapperRef}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="shadow-2xl rounded-lg overflow-hidden"
-                    style={{
-                        transform: `translate(${panOffset.x}px, ${panOffset.y}px)`,
-                        cursor: scale > 1 ? (isPanning ? 'grabbing' : 'grab') : 'default',
-                        transition: isPanning ? 'none' : 'transform 0.2s ease-out'
-                    }}
+                    className="shadow-2xl rounded-lg overflow-hidden inline-block"
                 >
                     <Document
                         file={pdfUrl}
