@@ -139,9 +139,13 @@ export default function AdminStatsPage() {
                             <div className="text-3xl font-bold text-emerald-400 mb-1">100%</div>
                             <div className="text-zinc-500 text-sm">System Uptime</div>
                         </div>
-                        <div className="p-6 rounded-2xl bg-zinc-900/50 border border-zinc-800">
-                            <div className="text-3xl font-bold text-amber-400 mb-1">🇮🇳</div>
-                            <div className="text-zinc-500 text-sm">Built for India</div>
+                        <div className="p-6 rounded-2xl bg-gradient-to-br from-orange-500/10 via-white/5 to-green-500/10 border border-orange-500/20">
+                            <div className="flex items-center gap-1.5 text-2xl font-bold mb-1">
+                                <span className="text-orange-500">●</span>
+                                <span className="text-white">●</span>
+                                <span className="text-green-500">●</span>
+                            </div>
+                            <div className="text-zinc-400 text-sm">Built in India</div>
                         </div>
                     </div>
                 </div>
