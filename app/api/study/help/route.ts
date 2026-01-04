@@ -36,16 +36,22 @@ export async function POST(request: Request) {
                     
                     Your job is to:
                     1. Explain the concepts in simple, everyday language
-                    2. Use 2-3 real-life examples or analogies
-                    3. Break down complex terms
-                    4. Give a memorable summary at the end
+                    2. Use bullet points for KEY concepts
+                    3. Provide 2-3 real-life examples (also as bullet points)
+                    4. Break down complex terms in a numbered list
+                    5. Give a memorable summary at the end
                     
                     Be encouraging and supportive. Avoid jargon. Make it feel like a helpful friend explaining things.
+                    
+                    Format your explanation with:
+                    • Bullet points for main concepts
+                    • Examples numbered as "Example 1:", "Example 2:"
+                    • Line breaks between sections
                     
                     Return ONLY a JSON object:
                     {
                         "greeting": "A short encouraging message",
-                        "explanation": "The main explanation with real-life examples",
+                        "explanation": "The main explanation with bullet points and examples",
                         "keyTakeaway": "One sentence memorable summary",
                         "encouragement": "A motivating closing message"
                     }`

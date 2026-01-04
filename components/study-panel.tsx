@@ -100,8 +100,8 @@ export default function StudyPanel({
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id as any)}
                                 className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium transition-colors ${activeTab === tab.id
-                                        ? "text-blue-400 border-b-2 border-blue-400 bg-blue-500/5"
-                                        : "text-slate-400 hover:text-slate-200"
+                                    ? "text-blue-400 border-b-2 border-blue-400 bg-blue-500/5"
+                                    : "text-slate-400 hover:text-slate-200"
                                     }`}
                             >
                                 <tab.icon className="w-4 h-4" />
@@ -110,8 +110,15 @@ export default function StudyPanel({
                         ))}
                     </div>
 
-                    {/* Content */}
-                    <div className="flex-1 overflow-y-auto p-6">
+                    {/* Content - Scrollable area */}
+                    <div
+                        className="flex-1 p-6"
+                        style={{
+                            overflowY: 'auto',
+                            overflowX: 'hidden',
+                            maxHeight: 'calc(100vh - 180px)' // Account for header and tabs
+                        }}
+                    >
                         {/* Summary Tab */}
                         {activeTab === "summary" && (
                             <div className="space-y-6">
