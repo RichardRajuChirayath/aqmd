@@ -10,6 +10,7 @@ export function useSharedPDF() {
         uri: string
         data?: string
     } | null>(null)
+    const [isProcessing, setIsProcessing] = useState(false)
     const router = useRouter()
 
     useEffect(() => {
@@ -18,55 +19,70 @@ export function useSharedPDF() {
 
         const checkForSharedFile = async () => {
             try {
-                // Dynamic import to avoid SSR issues
-                const { App } = await import("@capacitor/app")
-                const { Filesystem, Directory } = await import("@capacitor/filesystem")
+                // Dynamic imports to avoid SSR issues
+                const SendIntent = await import("send-intent").then(m => m.SendIntent)
+                const { Filesystem } = await import("@capacitor/filesystem")
 
-                // Listen for app URL open events (shared files come through here)
-                App.addListener("appUrlOpen", async (event: { url: string }) => {
-                    console.log("[Share] Received URL:", event.url)
+                console.log("[Share] Checking for shared intent...")
 
-                    // Handle content:// URIs from Android share
-                    if (event.url.startsWith("content://") || event.url.endsWith(".pdf")) {
+                // Check if app was opened with a shared file
+                const intent = await SendIntent.checkSendIntentReceived()
+                console.log("[Share] Intent received:", intent)
+
+                if (intent && intent.url) {
+                    setIsProcessing(true)
+                    console.log("[Share] Processing shared file:", intent.url)
+
+                    // Get file name from intent
+                    const fileName = intent.title || intent.url.split("/").pop() || "shared.pdf"
+
+                    // For content:// URIs, we need to read the file content
+                    if (intent.url.startsWith("content://") || intent.type?.includes("pdf")) {
                         try {
-                            // Read the shared file
-                            const fileName = event.url.split("/").pop() || "shared.pdf"
-
-                            // For content:// URIs, we need to copy to app storage first
-                            // The Capacitor app will handle this automatically
-                            setSharedFile({
-                                name: fileName,
-                                uri: event.url
+                            // Try to read the file as base64
+                            const fileData = await Filesystem.readFile({
+                                path: intent.url
                             })
 
-                            // Navigate to study page with shared file intent
-                            router.push(`/study?shared=true&uri=${encodeURIComponent(event.url)}`)
-                        } catch (error) {
-                            console.error("[Share] Failed to process shared file:", error)
+                            const pdfData = `data:application/pdf;base64,${fileData.data}`
+
+                            setSharedFile({
+                                name: fileName,
+                                uri: intent.url,
+                                data: pdfData
+                            })
+
+                            // Store in localStorage for the study page
+                            localStorage.setItem("shared_pdf", JSON.stringify({
+                                name: fileName,
+                                data: pdfData,
+                                timestamp: Date.now()
+                            }))
+
+                            console.log("[Share] PDF stored, navigating to study...")
+                            router.push("/study?shared=true")
+                        } catch (readError) {
+                            console.error("[Share] Failed to read file:", readError)
+                            // Still navigate, let the study page handle it
+                            localStorage.setItem("shared_pdf_uri", intent.url)
+                            router.push("/study?shared=true")
                         }
                     }
-                })
-
-                // Check if app was opened with a shared file (cold start)
-                const launchUrl = await App.getLaunchUrl()
-                if (launchUrl?.url) {
-                    console.log("[Share] Launch URL:", launchUrl.url)
-                    if (launchUrl.url.endsWith(".pdf") || launchUrl.url.includes("pdf")) {
-                        setSharedFile({
-                            name: launchUrl.url.split("/").pop() || "shared.pdf",
-                            uri: launchUrl.url
-                        })
-                        router.push(`/study?shared=true&uri=${encodeURIComponent(launchUrl.url)}`)
-                    }
+                    setIsProcessing(false)
                 }
             } catch (error) {
-                // Not on Capacitor, ignore
-                console.log("[Share] Not on Capacitor platform")
+                // Not on Capacitor or no intent, ignore
+                console.log("[Share] No shared intent or not on Capacitor:", error)
             }
         }
 
+        // Run check immediately on mount
         checkForSharedFile()
+
+        // Also check periodically (for when app is resumed with intent)
+        const interval = setInterval(checkForSharedFile, 2000)
+        return () => clearInterval(interval)
     }, [router])
 
-    return sharedFile
+    return { sharedFile, isProcessing }
 }

@@ -24,12 +24,62 @@ export default function StudyPage() {
     const [isDragging, setIsDragging] = useState(false)
     const router = useRouter()
     const guestId = useGuestId()
+    const { sharedFile, isProcessing } = useSharedPDF()
 
     useEffect(() => {
         if (guestId) {
             fetchSessions()
         }
     }, [guestId])
+
+    // Handle shared PDF from mobile app
+    useEffect(() => {
+        const checkSharedPDF = async () => {
+            const sharedPdfData = localStorage.getItem("shared_pdf")
+            if (sharedPdfData && guestId) {
+                try {
+                    const { name, data, timestamp } = JSON.parse(sharedPdfData)
+                    // Only process if shared within last 30 seconds
+                    if (Date.now() - timestamp < 30000) {
+                        console.log("[Share] Processing shared PDF:", name)
+                        localStorage.removeItem("shared_pdf")
+                        await processSharedPDF(name, data)
+                    }
+                } catch (error) {
+                    console.error("[Share] Failed to process shared PDF:", error)
+                }
+            }
+        }
+        checkSharedPDF()
+    }, [guestId])
+
+    const processSharedPDF = async (name: string, pdfData: string) => {
+        setIsUploading(true)
+        try {
+            const res = await fetch(apiUrl("/api/study/session"), {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    guestId,
+                    pdfName: name
+                })
+            })
+
+            const data = await res.json()
+            if (data.session) {
+                localStorage.setItem(`study_session_${data.session.id}`, JSON.stringify({
+                    ...data.session,
+                    pdfUrl: pdfData
+                }))
+                router.push(`/study/${data.session.id}`)
+            }
+        } catch (error) {
+            console.error("[Share] Failed to create session:", error)
+            alert("Failed to process shared PDF")
+        } finally {
+            setIsUploading(false)
+        }
+    }
 
     const fetchSessions = async () => {
         try {
@@ -42,6 +92,7 @@ export default function StudyPage() {
             console.error("Failed to fetch sessions:", error)
         }
     }
+
 
     const handleFileUpload = async (file: File) => {
         if (!file.type.includes("pdf")) {
