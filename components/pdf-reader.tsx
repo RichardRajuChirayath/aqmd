@@ -141,7 +141,9 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
                 style={{
                     overflow: 'scroll', // ALWAYS show scrollbars
                     display: 'block', // Remove flex so scrollbars work
-                    position: 'relative'
+                    position: 'relative',
+                    width: '100%',
+                    height: '100%'
                 }}
             >
                 {loading && (
@@ -149,32 +151,34 @@ export default function PDFReader({ pdfUrl, sessionId, onPageChange, onPageRende
                         <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
                     </div>
                 )}
-                <div className="flex items-center justify-center min-h-full">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="shadow-2xl rounded-lg overflow-hidden inline-block"
+                {/* NO flex wrapper - PDF can be wider than viewport */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="shadow-2xl rounded-lg overflow-hidden inline-block"
+                    style={{
+                        minWidth: 'fit-content' // Allow PDF to determine width
+                    }}
+                >
+                    <Document
+                        file={pdfUrl}
+                        onLoadSuccess={onDocumentLoadSuccess}
+                        loading={
+                            <div className="flex items-center justify-center p-20">
+                                <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+                            </div>
+                        }
                     >
-                        <Document
-                            file={pdfUrl}
-                            onLoadSuccess={onDocumentLoadSuccess}
-                            loading={
-                                <div className="flex items-center justify-center p-20">
-                                    <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-                                </div>
-                            }
-                        >
-                            <Page
-                                pageNumber={pageNumber}
-                                scale={scale}
-                                onLoadSuccess={onPageLoadSuccess}
-                                renderTextLayer={false}
-                                renderAnnotationLayer={false}
-                                className="pdf-page"
-                            />
-                        </Document>
-                    </motion.div>
-                </div>
+                        <Page
+                            pageNumber={pageNumber}
+                            scale={scale}
+                            onLoadSuccess={onPageLoadSuccess}
+                            renderTextLayer={false}
+                            renderAnnotationLayer={false}
+                            className="pdf-page"
+                        />
+                    </Document>
+                </motion.div>
             </div>
         </div>
     )
