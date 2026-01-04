@@ -183,6 +183,12 @@ export default function StudyPanel({
                                                             Expected: {q.expectedAnswer}
                                                         </p>
                                                     </div>
+                                                ) : q.userAnswer && q.isCorrect === undefined ? (
+                                                    // Loading state - answer submitted but waiting for AI
+                                                    <div className="flex items-center gap-2 p-3 rounded-lg bg-blue-600/10 border border-blue-600/30">
+                                                        <Loader2 className="w-4 h-4 text-blue-400 animate-spin" />
+                                                        <span className="text-blue-400 text-sm">Checking your answer...</span>
+                                                    </div>
                                                 ) : (
                                                     <div className="flex gap-2">
                                                         <input
@@ -190,11 +196,17 @@ export default function StudyPanel({
                                                             placeholder="Your answer..."
                                                             value={answers[index] || ""}
                                                             onChange={(e) => handleAnswerChange(index, e.target.value)}
+                                                            onKeyPress={(e) => {
+                                                                if (e.key === 'Enter' && answers[index]?.trim()) {
+                                                                    handleSubmit(index)
+                                                                }
+                                                            }}
                                                             className="flex-1 px-4 py-2 rounded-lg bg-slate-900 border border-slate-700 focus:border-blue-500 outline-none text-sm"
                                                         />
                                                         <button
                                                             onClick={() => handleSubmit(index)}
-                                                            className="p-2 rounded-lg bg-blue-600 hover:bg-blue-500 transition-colors"
+                                                            disabled={!answers[index]?.trim()}
+                                                            className="p-2 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                                                         >
                                                             <Send className="w-4 h-4" />
                                                         </button>
