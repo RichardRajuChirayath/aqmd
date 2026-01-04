@@ -24,7 +24,6 @@ export default function StudyPage() {
     const [isDragging, setIsDragging] = useState(false)
     const router = useRouter()
     const guestId = useGuestId()
-    const { sharedFile, isProcessing } = useSharedPDF()
 
     useEffect(() => {
         if (guestId) {
@@ -32,26 +31,32 @@ export default function StudyPage() {
         }
     }, [guestId])
 
-    // Handle shared PDF from mobile app
+    // Handle shared PDF from Android using native plugin
     useEffect(() => {
         const checkSharedPDF = async () => {
-            const sharedPdfData = localStorage.getItem("shared_pdf")
-            if (sharedPdfData && guestId) {
-                try {
-                    const { name, data, timestamp } = JSON.parse(sharedPdfData)
-                    // Only process if shared within last 30 seconds
-                    if (Date.now() - timestamp < 30000) {
-                        console.log("[Share] Processing shared PDF:", name)
-                        localStorage.removeItem("shared_pdf")
-                        await processSharedPDF(name, data)
+            if (!guestId) return
+
+            try {
+                // Try to get shared PDF from native plugin
+                const SharedPdf = await import("@/plugins/shared-pdf").then(m => m.default)
+                const sharedData = await SharedPdf.getSharedPdf()
+
+                if (sharedData && sharedData.data) {
+                    // Check if recent (within last 10 seconds)
+                    if (Date.now() - sharedData.timestamp < 10000) {
+                        console.log("[Share] Processing native shared PDF:", sharedData.name)
+                        await processSharedPDF(sharedData.name, sharedData.data)
+                        await SharedPdf.clearSharedPdf()
                     }
-                } catch (error) {
-                    console.error("[Share] Failed to process shared PDF:", error)
                 }
+            } catch (error) {
+                // Not on Capacitor or plugin not available
+                console.log("[Share] Native plugin not available")
             }
         }
         checkSharedPDF()
     }, [guestId])
+
 
     const processSharedPDF = async (name: string, pdfData: string) => {
         setIsUploading(true)
