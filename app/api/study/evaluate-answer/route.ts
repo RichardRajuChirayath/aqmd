@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server'
 import Groq from 'groq-sdk'
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
-
 export async function POST(request: Request) {
     try {
         const { question, expectedAnswer, userAnswer } = await request.json()
@@ -10,6 +8,16 @@ export async function POST(request: Request) {
         if (!question || !expectedAnswer || !userAnswer) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
         }
+
+        // Check if GROQ_API_KEY exists
+        if (!process.env.GROQ_API_KEY) {
+            console.error('GROQ_API_KEY not configured')
+            // Fallback to simple string matching
+            const isCorrect = userAnswer.toLowerCase().trim() === expectedAnswer.toLowerCase().trim()
+            return NextResponse.json({ isCorrect })
+        }
+
+        const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
 
         // Use AI to evaluate if the answer is semantically correct
         const prompt = `You are evaluating a student's answer to a study question.
@@ -38,9 +46,17 @@ Respond with ONLY "true" if correct, or "false" if incorrect.`
         return NextResponse.json({ isCorrect })
     } catch (error: any) {
         console.error('Answer evaluation error:', error)
-        return NextResponse.json(
-            { error: error?.message || 'Evaluation failed' },
-            { status: 500 }
-        )
+
+        // Fallback to simple matching if AI fails
+        try {
+            const { expectedAnswer, userAnswer } = await request.json()
+            const isCorrect = userAnswer.toLowerCase().trim() === expectedAnswer.toLowerCase().trim()
+            return NextResponse.json({ isCorrect })
+        } catch {
+            return NextResponse.json(
+                { error: error?.message || 'Evaluation failed', isCorrect: false },
+                { status: 500 }
+            )
+        }
     }
 }
