@@ -24,9 +24,12 @@ export function useSharedPDF() {
                 const { Filesystem } = await import("@capacitor/filesystem")
 
                 console.log("[Share] Checking for shared intent...")
+                alert("[DEBUG] Checking for shared intent...")
 
                 // Check if app was opened with a shared file
                 const intent = await SendIntent.checkSendIntentReceived()
+
+                alert("[DEBUG] Intent result: " + JSON.stringify(intent || "null"))
                 console.log("[Share] Intent received:", intent)
 
                 if (intent && intent.url) {
