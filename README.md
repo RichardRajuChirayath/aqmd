@@ -7,6 +7,22 @@
 </p>
 
 ### **Turning Passive Reading into Active Mastery.**
+
+## 🛠 Technical Architecture
+
+| Layer | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Framework** | [Next.js 15+](https://nextjs.org/) | Full-stack architecture with App Router & Server Actions. |
+| **Intelligence** | [Groq (Llama-3.3-70B)](https://groq.com/) | High-speed semantic analysis and pedagogic evaluation. |
+| **OCR Processing** | [OCR.space API](https://ocr.space/) | Extracting text from scanned PDFs and handwritten notes. |
+| **Data Persistence** | [Prisma ORM](https://www.prisma.io/) + [PostgreSQL](https://www.postgresql.org/) | Type-safe database management and relational storage. |
+| **Mobile Bridge** | [Capacitor 8.0](https://capacitorjs.com/) | Native Android integration with custom share-intent handling. |
+| **Styling** | [Tailwind CSS 4.0](https://tailwindcss.com/) | Utility-first design with high-performance dark-mode tokens. |
+| **Animations** | [Framer Motion](https://www.framer.com/motion/) | Liquid transitions and interactive UI state management. |
+| **UI Primitive** | [Radix UI](https://www.radix-ui.com/) | Accessible, unstyled components for building custom UI kits. |
+| **Icons** | [Lucide React](https://lucide.dev/) | Consistent, lightweight vector iconography. |
+
+---
 AQMD is a high-performance **Cognitive Alignment Platform** designed for students and educators who demand precision. It bridges the gap between study materials and real-world exam performance through institutional-grade AI analysis.
 
 ---
