@@ -40,24 +40,38 @@ The crown jewel of AQMD. Don't just read—engage.
 - **"I'm Stuck" Engine**: If you encounter a complex concept, trigger the AI Assistant for an immediate, simplified breakdown tailored to that specific page.
 
 ### **2. The Diagnostic Terminal**
-A high-stakes interface for semantic alignment check.
-- **Answer Validation**: Input a specific question and your response; AQMD evaluates the **Alignment Score** between teacher intent and student output.
-- **Intent Deviation Mapping**: Discover hidden gaps where your answers drift from pedagogical goals.
-- **Suggest Reframe**: AI-driven guidance on how to restructure your technical arguments for maximum impact.
+A high-stakes interface for semantic alignment check and pattern recognition.
+- **Answer Validation**: AQMD evaluates the **Alignment Score** between teacher intent and student output.
+- **Question Evolution Timeline**: 5-year deep-analysis of exam patterns (MCQ vs Theory) with predictive modeling for 2025.
+- **Important Questions Predictor**: AI-identified "Sure-Shot" questions and predicted "Never Asked Before" challenges.
+- **Chapter Weightage**: Data-driven mapping of syllabus chapters to their respective marks distribution and importance.
 
-### **3. Mobile-Native Intelligence**
-AQMD isn't just a website; it's a mobile companion.
-- **Native Android Experience**: Smooth, high-performance interface built for mobile focus.
-- **System-Level Share Support**: See a PDF in your browser or file manager? Use the "Share to AQMD" native intent to immediately spin up a study session.
-- **Cross-Device Sync**: Your study progress and history stay with you, whether you're on a desktop or on the go.
+### **3. Career Impact Engine**
+AQMD bridges the gap between grades and high-paying jobs.
+- **Market Demand Scan**: See the real-world demand percentage for any subject or concept.
+- **Top Roles & Hiring Companies**: Direct mapping of syllabus topics to the companies hiring for those skills (e.g., Google, Microsoft, Amazon).
+- **Industry Resilience Index**: Predicts how a specific concept translates to long-term career stability.
 
 ### **4. Predictive Mastery Hub**
-Data-driven transparency into your learning journey.
-- **Exams Readiness Score**: A real-time calculation of your proficiency across attempted papers.
+Data-driven transparency into your academic journey.
+- **Exams Readiness Score**: Real-time calculation of your proficiency across all attempted papers.
 - **Syllabus Archives (History)**: Full retrospective of your past diagnostic records and improvement curve.
-- **Learning Blueprints (Pathways)**: Automatically generated study maps and pathways based on your historical performance.
-- **Live Ecosystem Stats**: Join a growing community of high-performance learners in India through real-time engagement tracking.
+- **Learning Blueprints (Pathways)**: Automatically generated study maps based on your historical performance.
+- **Live Ecosystem Stats**: Real-time engagement tracking of the high-performance student community in India.
 
+### **5. Mobile-Native Power**
+AQMD isn't just a website; it's a mobile performance companion.
+- **Native Android Experience**: Smooth, high-performance interface built with Capacitor 8.0.
+- **System-Level Share Support**: Share any PDF from your browser or file manager directly to AQMD to start a session.
+- **Cross-Device Sync**: Your study progress and history stay with you across all devices.
+
+---
+
+## 🔒 Privacy & Data Sovereignty
+We understand the sensitivity of academic materials. AQMD is built with a **Privacy-First Architecture**:
+- **Local PDF Processing**: Your PDFs are stored in your browser's `localStorage`. They **never** upload to our servers.
+- **Metadata-Only Analysis**: Only extracted text snippets are sent to the Assessor AI for pedagogical evaluation.
+- **Anonymous Identity**: No complex signup required—guest identities ensure your data belongs only to you.
 
 ---
 
@@ -67,20 +81,20 @@ AQMD's proprietary analysis flow ensures precision in every interaction.
 ```mermaid
 graph TD
     A[Source PDF/Input] --> B{AI Assessor}
-    B --> C[Page-Wise Deconstruction]
+    B --> C[Pattern Recognition]
     C --> D[Semantic Alignment Scan]
     D --> E[Misconception Identification]
     E --> F[Interactive Mastery Check]
-    F --> G[Predictive Grade Generation]
+    F --> G[Predictive Grade & Career Map]
 ```
 
 ---
 
 ## ✨ Immersive Design Philosophy
-We believe study tools should feel like high-end software, not clerical forms.
+We believe study tools should feel like high-end engineering software.
 - **Liquid Motion**: Silky-smooth transitions powered by `Framer Motion`.
-- **Engineering-Grade UI**: A technical, dark-mode technical aesthetic (Blueprint Grid) designed to minimize cognitive load.
-- **Diagnostic Terminal Loading**: Real-time feedback logs that show you exactly how the AI is thinking.
+- **Next.js 15+ Resilience**: Built on the bleeding edge of web technology for sub-second response times.
+- **Blueprint Aesthetic**: A technical, dark-mode focused UI designed to minimize cognitive load during deep work.
 
 ---
 
