@@ -1,127 +1,79 @@
 # <img src="./public/icon.svg" width="40" height="40" /> AQMD: Advanced Cognitive Engine V2.0
 
 <p align="center">
-  <img src="https://img.shields.io/badge/AI-Powered-blueviolet?style=for-the-badge&logo=openai" />
-  <img src="https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js" />
-  <img src="https://img.shields.io/badge/Mobile-Android-green?style=for-the-badge&logo=android" />
-  <img src="https://img.shields.io/badge/Database-Prisma-2D3748?style=for-the-badge&logo=prisma" />
+  <img src="https://img.shields.io/badge/Product-Educational_Intelligence-blueviolet?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Status-Operational-brightgreen?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Region-India-orange?style=for-the-badge" />
 </p>
 
-### **Predictive Grading. Career Launch.**
-AQMD isn't just a study tool—it's a **Cognitive Alignment Engine** designed to bridge the gap between academic preparation and real-world career demand. By mapping your syllabus directly to industry requirements, AQMD finds the papers you need to master and grades your performance with institutional-grade precision.
+### **Turning Passive Reading into Active Mastery.**
+AQMD is a high-performance **Cognitive Alignment Platform** designed for students and educators who demand precision. It bridges the gap between study materials and real-world exam performance through institutional-grade AI analysis.
 
 ---
 
-## ⚡ Cognitive Intelligence Lifecycle
-The core of AQMD is its proprietary analysis flow, ensuring every answer is evaluated for more than just correctness.
+## 💎 Core Product Ecosystem
+
+### **1. Smart PDF Study Companion**
+The crown jewel of AQMD. Don't just read—engage.
+- **Context-Aware Learning**: Upload any PDF (textbook, research paper, or notes) and the engine tracks your reading progress page-by-page.
+- **Deep OCR Integration**: The system automatically deconstructs scanned documents into actionable text in real-time.
+- **AI-Powered Reflection**: After every page, AQMD generates:
+  - **Compressed Summaries**: Fast recall of core technical concepts.
+  - **Critical Reflection Questions**: Interactive challenges to test your deep understanding.
+  - **Study Tips**: Behavioral nudges to improve retention.
+- **"I'm Stuck" Engine**: If you encounter a complex concept, trigger the AI Assistant for an immediate, simplified breakdown tailored to that specific page.
+
+### **2. The Diagnostic Terminal**
+A high-stakes interface for semantic alignment check.
+- **Answer Validation**: Input a specific question and your response; AQMD evaluates the **Alignment Score** between teacher intent and student output.
+- **Intent Deviation Mapping**: Discover hidden gaps where your answers drift from pedagogical goals.
+- **Suggest Reframe**: AI-driven guidance on how to restructure your technical arguments for maximum impact.
+
+### **3. Mobile-Native Intelligence**
+AQMD isn't just a website; it's a mobile companion.
+- **Native Android Experience**: Smooth, high-performance interface built for mobile focus.
+- **System-Level Share Support**: See a PDF in your browser or file manager? Use the "Share to AQMD" native intent to immediately spin up a study session.
+- **Cross-Device Sync**: Your study progress and history stay with you, whether you're on a desktop or on the go.
+
+### **4. Predictive Mastery Hub**
+Data-driven transparency into your learning journey.
+- **Exams Readiness Score**: A real-time calculation of your proficiency across attempted papers.
+- **Syllabus Archives (History)**: Full retrospective of your past diagnostic records and improvement curve.
+- **Learning Blueprints (Pathways)**: Automatically generated study maps and pathways based on your historical performance.
+- **Live Ecosystem Stats**: Join a growing community of high-performance learners in India through real-time engagement tracking.
+
+
+---
+
+## ⚡ The Intelligence Lifecycle
+AQMD's proprietary analysis flow ensures precision in every interaction.
 
 ```mermaid
 graph TD
-    A[Student Input] --> B{Assessor AI}
-    B --> C[Intent Deconstruction]
-    C --> D[Semantic Alignment]
+    A[Source PDF/Input] --> B{AI Assessor}
+    B --> C[Page-Wise Deconstruction]
+    C --> D[Semantic Alignment Scan]
     D --> E[Misconception Identification]
-    E --> F[Blueprint Synthesis]
-    F --> G[Predictive Score]
-    G --> H[Actionable Feedback]
+    E --> F[Interactive Mastery Check]
+    F --> G[Predictive Grade Generation]
 ```
-
-1.  **📡 Secure Uplink**: Establishing encrypted connection to the Assessor AI.
-2.  **🔍 Intent Deconstruction**: Deep-parsing the teacher's target pedagogical goal.
-3.  **🧠 Semantic Alignment**: Evaluating student responses for conceptual density and accuracy.
-4.  **✨ Misconception Identification**: Pinpointing precise gaps in understanding.
-5.  **📊 Blueprint Synthesis**: Generating actionable feedback and improvement pathways.
-
 
 ---
 
-## 🚀 Key Modules
-
-### **1. The Diagnostic Terminal**
-A high-performance interface for real-time answer evaluation.
-- **Predictive Scoring**: Immediate feedback on semantic alignment.
-- **Intent Deviation Mapping**: Understand exactly *where* your answer drifted from the goal.
-- **Dynamic Reframe Suggestions**: AI-generated prompts to help you improve your responses.
-
-### **2. Predictive Score Tracking**
-Track your journey toward exam readiness with automated mastery metrics.
-- **Mastery Goal Visualization**: Data-driven progress bars tracking your path to 95% proficiency.
-- **Exam Readiness Index**: Real-time calculation of your likelihood to excel in upcoming tests.
-
-### **3. The Question Vault & Syllabus Archives**
-Access a curated repository of past papers and institutional knowledge.
-- **Industry Relevance Mapping**: See why a specific question matters for your future career.
-- **Learning Blueprints**: Automatically generated study maps based on your history and uploads.
-
-### **4. Mobile-First Architecture**
-Full Capacitor integration allows AQMD to live where you study.
-- **Native Android Support**: Sync assets and run as a high-performance native app.
-- **Cross-Platform Sync**: Your progress follows you from desktop to mobile.
-
----
-
-## ✨ Immersive Experience
-AQMD is designed for focus. The interface features:
-- **Liquid Motion**: Powered by `Framer Motion` for silky-smooth transitions and haptic-like feedback.
-- **Blueprint Aesthetic**: A technical, dark-mode first design that reduces eye strain during long study sessions.
-- **Real-time Diagnostic Feedback**: Watch the AI deconstruct your answer line-by-line in the loading terminal.
-
----
-
-## 📊 System Monitoring
-| Component | Status | Utility |
-| :--- | :--- | :--- |
-| **Cognitive Engine** | ![Operational](https://img.shields.io/badge/Status-Operational-brightgreen?style=flat-square) | Llama-3 Analysis |
-| **Question Vault** | ![Live](https://img.shields.io/badge/Database-Live-brightgreen?style=flat-square) | Past Paper Access |
-| **Mobile Sync** | ![Active](https://img.shields.io/badge/Capacitor-Active-brightgreen?style=flat-square) | Android Integration |
-
-
----
-
-## 🛠 Tech Stack
-
-| Layer | Technologies |
-| :--- | :--- |
-| **Frontend** | [Next.js](https://nextjs.org/), [Framer Motion](https://www.framer.com/motion/), [Tailwind CSS](https://tailwindcss.com/) |
-| **Intelligence** | [Llama-3.3-70B](https://groq.com/), [Groq SDK](https://github.com/groq/groq-typescript) |
-| **Backend** | [Prisma ORM](https://www.prisma.io/), [PostgreSQL](https://www.postgresql.org/) |
-| **Mobile** | [Capacitor](https://capacitorjs.com/), [Android SDK](https://developer.android.com/) |
-| **UI Components** | [Radix UI](https://www.radix-ui.com/), [Lucide Icons](https://lucide.dev/) |
-
----
-
-## 🏃 Getting Started
-
-### 1. Initialize the Engine
-```bash
-npm install
-```
-
-### 2. Configure Intelligence
-Create a `.env` file with your credentials:
-```env
-DATABASE_URL="your_postgresql_url"
-GROQ_API_KEY="your_groq_api_key"
-```
-
-### 3. Deploy Local Environment
-```bash
-npm run dev
-```
-
-### 4. Sync for Mobile
-```bash
-npm run mobile:sync
-```
+## ✨ Immersive Design Philosophy
+We believe study tools should feel like high-end software, not clerical forms.
+- **Liquid Motion**: Silky-smooth transitions powered by `Framer Motion`.
+- **Engineering-Grade UI**: A technical, dark-mode technical aesthetic (Blueprint Grid) designed to minimize cognitive load.
+- **Diagnostic Terminal Loading**: Real-time feedback logs that show you exactly how the AI is thinking.
 
 ---
 
 ## 🌐 Vision & Origin
 
-AQMD is built for high-performance learners who demand more from their study materials. It's designed to turn passive reading into active mastery.
+AQMD (Advanced Quality Mastery & Diagnostics) is built for the next generation of Indian technical leaders. It transforms "reading" into "quantified mastery."
 
 <p align="center">
-  <b>Built with ❤️ for the future of education in India 🇮🇳</b><br/>
+  <b>Built for high-performance learners in India 🇮🇳</b><br/>
   <img src="./public/india-flag.png" width="40" />
 </p>
 
